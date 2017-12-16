@@ -63,7 +63,7 @@ class AIPlayer(Player):
         
         self.network = Model(x_in, [policy_out, value_out], name="reversi_model")
         losses = [AIPlayer.objective_function_for_policy, AIPlayer.objective_function_for_value]
-        self.network.compile(optimizer="RMSprop", loss=losses)
+        self.network.compile(optimizer="Adam", loss=losses)
       
     @staticmethod
     def objective_function_for_policy(y_true, y_pred):

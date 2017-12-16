@@ -32,8 +32,8 @@ def run_games(config):
         while(new_1 == model_1 and new_2 == model_2):
             #print("Waiting on new model. Sleeping for 1 minute.")
             sleep(60)
-            new_1 = load_player(p1, config.model_1, model_1)
-            new_2 = load_player(p2, config.model_2, model_2)
+            new_1 = load_player(p1, config.model_1, model_1, config)
+            new_2 = load_player(p2, config.model_2, model_2, config)
         model_1 = new_1
         model_2 = new_2
         wins = 0
@@ -43,7 +43,7 @@ def run_games(config):
         for j in range(config.game_num):
             side = -1
             while not game.game_over():
-                if i % 2 == 0:
+                if j % 2 == 0:
                     if side == -1:
                         t = p1.pick_move(game, side)
                     else:
@@ -55,9 +55,9 @@ def run_games(config):
                         t = p2.pick_move(game, side)
                 game.play_move(t[0], t[1], side)
                 side *= -1
-            if i % 2 == 0 and game.get_winner() == -1:
+            if j % 2 == 0 and game.get_winner() == -1:
                 wins += 1
-            elif i % 2 == 1 and game.get_winner() == 1:
+            elif j % 2 == 1 and game.get_winner() == 1:
                 wins += 1
             game.reset_board()
         print("%s beats %s %0.2f%% of the time out of %d games" % (config.model_1, config.model_2, 
@@ -80,7 +80,7 @@ def create_player(player_name, current, config):
         player = AIPlayer(0, config.simulation_num_per_move, train=False, weights=model)
     return player, model
     
-def load_player(player, player_name, current):
+def load_player(player, player_name, current, config):
     if player_name == "newest":
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
         if model != current:
