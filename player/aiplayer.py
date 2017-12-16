@@ -106,26 +106,22 @@ class AIPlayer(Player):
         monte_prob = self.monte_carlo(game, side)
         
         if self.train:
+            temp = 1
+        else:
+            temp = 0.25
+           
+        monte_prob = np.float_power(monte_prob, 1/temp)
+        monte_prob = np.divide(monte_prob, np.sum(monte_prob))
+        
+        if self.train:
             self.temp_state.append((self.preprocess_input(game.board, side), monte_prob))
         
-            total = 0
-            for i, move in enumerate(possible_moves):
-                total += monte_prob[Othello.move_id(move)]
-            
-            r = random() * total
-            for i, move in enumerate(possible_moves):
-                r -= monte_prob[Othello.move_id(move)]
-                if r <= 0:
-                    return move
-        else:
-            highest_prob = 0
-            best_move = None
-            for i, move in enumerate(possible_moves):
-                if highest_prob < monte_prob[Othello.move_id(move)]:
-                    highest_prob = monte_prob[Othello.move_id(move)]
-                    best_move = move
-            return best_move
-        return possible_moves[0]
+        r = random()
+        for i, move in enumerate(possible_moves):
+            r -= monte_prob[Othello.move_id(move)]
+            if r <= 0:
+                return move
+        return possible_moves[-1]
             
     def monte_carlo(self, game, side):
         N = defaultdict(lambda: 0)
