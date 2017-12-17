@@ -186,7 +186,7 @@ class AIPlayer(Player):
                         break
                     
                     current_input = self.preprocess_input(clone.board, current_side)
-                    sid = Othello.state_id(game.board)
+                    sid = Othello.state_id(clone.board)
                     pred = self.network.predict(current_input[np.newaxis,:])
                     policy = pred[0][0]
                     value = pred[1][0]
