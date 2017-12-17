@@ -27,6 +27,7 @@ def run_games(config):
     p1, new_1 = create_player(config.model_1, model_1, config)
     p2, new_2 = create_player(config.model_2, model_2, config)
     i = 0
+    total = 0
     while True:
         i += 1
         new_1 = load_player(p1, config.model_1, model_1, config)
@@ -66,6 +67,8 @@ def run_games(config):
         util.progress(config.game_num, config.game_num, start=start)
         print("%s beats %s %0.2f%% of the time out of %d games" % (config.model_1, config.model_2, 
               100*wins/config.game_num, config.game_num))
+        total += 100*wins/config.game_num
+        print("Average Win Percent: %0.2f" % (total/i))
         if not (config.repeat_with_new_model and (config.model_1 == "newest" or config.model_2 == "newest")):
             break
         
