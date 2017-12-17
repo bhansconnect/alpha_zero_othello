@@ -3,6 +3,7 @@ from alpha_zero_othello.othello import Othello
 from alpha_zero_othello.lib.replaybuffer import ReplayBuffer
 from collections import deque, defaultdict
 import keras.backend as K
+from keras import optimizers
 from keras.engine.training import Model
 from keras.layers import Dense, Activation, Flatten
 from keras.engine.topology import Input
@@ -63,7 +64,7 @@ class AIPlayer(Player):
         
         self.network = Model(x_in, [policy_out, value_out], name="reversi_model")
         losses = [AIPlayer.objective_function_for_policy, AIPlayer.objective_function_for_value]
-        self.network.compile(optimizer="Adam", loss=losses)
+        self.network.compile(optimizer=optimizers.SGD(lr=1e-2, momentum=0.9), loss=losses)
       
     @staticmethod
     def objective_function_for_policy(y_true, y_pred):
