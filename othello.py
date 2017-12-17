@@ -117,8 +117,16 @@ class Othello(object):
         if move == (-1,-1):
                 return 64
         return move[0]+move[1]*8
-        
-               
+    
+    move_count = 65
+    
+    def get_move(mid):
+        if mid == 64:
+            return (-1, -1)
+        x = mid%8
+        y = mid//8
+        return (x, y)
+           
     @staticmethod
     def state_id(board):
         x = np.add(board, 1).flatten()

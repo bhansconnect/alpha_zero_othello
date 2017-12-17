@@ -28,6 +28,8 @@ def start():
     else:
         ai = AIPlayer(config.buffer_size, 1, config, weights=sorted(models)[-1])
         
+    ai.compile()
+    
     start = time()
     train(ai, config)
     print("Total Time: %0.2f seconds" % (time()-start))

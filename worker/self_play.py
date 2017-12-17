@@ -58,7 +58,7 @@ def run_games(config):
             ai.update_buffer(game.get_winner())
             game.reset_board()
         #print("Average Game Time: ", (time()-start)/(config.nb_game_in_file))
-        util.progress(config.nb_game_in_file, config.nb_game_in_file)
+        util.progress(config.nb_game_in_file, config.nb_game_in_file, start=start)
         t = Thread(target=save_games, args=(config, ai.buffer))
         t.start()
     t.join()

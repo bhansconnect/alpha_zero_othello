@@ -63,7 +63,7 @@ def run_games(config):
             elif j % 2 == 1 and game.get_winner() == 1:
                 wins += 1
             game.reset_board()
-        util.progress(config.game_num, config.game_num)
+        util.progress(config.game_num, config.game_num, start=start)
         print("%s beats %s %0.2f%% of the time out of %d games" % (config.model_1, config.model_2, 
               100*wins/config.game_num, config.game_num))
         if not (config.repeat_with_new_model and (config.model_1 == "newest" or config.model_2 == "newest")):
