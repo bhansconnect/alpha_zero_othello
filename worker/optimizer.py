@@ -57,16 +57,16 @@ def train(ai, config):
         print("Iteration %04d"%i)
         print("Training for %d epochs on %d samples" % (config.epochs_per_cycle, len(ai.buffer.buffer)))
         start = time()
-        history = ai.train_epoch(config.batch_size, config.epochs_per_cycle, config.verbose)
+        history = ai.train_epoch(config.batch_size, 1+2000//(len(ai.buffer.buffer)//config.batch_size), config.verbose)
         for val in history.history.keys():
-            print("%s: %0.2f" % (val, history.history[val][-1]))
+            print("%s: %0.4f" % (val, history.history[val][-1]))
         if i % config.save_model_cycles == 0:
             ai.save_weights(config.data.model_location+str(time())+".h5")
 			
         file = open(config.data.history_location+str(time())+".pickle", 'wb') 
         pickle.dump(pickle.dumps(history.history), file)
         file.close() 
-        print("Iteration Time: ", (time()-start))
+        print("Iteration Time: %0.2f" % (time()-start))
 
 def load_games(ai, loaded_files, config):
     games = glob.glob(config.data.game_location+"*.pickle")

@@ -1,5 +1,5 @@
 from alpha_zero_othello.config import SelfPlayConfig, data_dir
-from alpha_zero_othello.lib import tf_util
+from alpha_zero_othello.lib import tf_util, util
 from alpha_zero_othello.player.aiplayer import AIPlayer
 from alpha_zero_othello.othello import Othello
 from threading import Thread
@@ -48,7 +48,8 @@ def run_games(config):
             ai.load_weights(model)
 		
         start=time()
-        for _ in range(config.nb_game_in_file):
+        for j in range(config.nb_game_in_file):
+            util.progress(j, config.nb_game_in_file, start=start)
             side = -1
             while not game.game_over():
                 t = ai.pick_move(game, side)
@@ -56,7 +57,7 @@ def run_games(config):
                 side *= -1
             ai.update_buffer(game.get_winner())
             game.reset_board()
-        print("Average Game Time: ", (time()-start)/(config.nb_game_in_file))
+        #print("Average Game Time: ", (time()-start)/(config.nb_game_in_file))
         print("Iteration Time: ", (time()-start))
         t = Thread(target=save_games, args=(config, ai.buffer))
         t.start()
