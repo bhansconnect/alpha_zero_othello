@@ -1,4 +1,4 @@
-from alpha_zero_othello.config import EvaluateConfig, data_dir
+from alpha_zero_othello.config import EvaluateConfig
 from alpha_zero_othello.lib import tf_util, util
 from alpha_zero_othello.player.player import RandomPlayer
 from alpha_zero_othello.player.aiplayer import AIPlayer
@@ -13,7 +13,7 @@ def start():
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
-        ai = AIPlayer(config.buffer_size, config.simulation_num_per_move, config)
+        ai = AIPlayer(config.buffer_size, config.simulation_num_per_move)
         ai.save_weights(config.data.model_location+str(time())+".h5")
     start = time()
     run_games(config)

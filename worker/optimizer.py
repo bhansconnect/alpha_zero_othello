@@ -1,4 +1,4 @@
-from alpha_zero_othello.config import OptimizerConfig, data_dir
+from alpha_zero_othello.config import OptimizerConfig
 from alpha_zero_othello.lib import tf_util
 from alpha_zero_othello.player.aiplayer import AIPlayer
 from time import time, sleep
@@ -23,10 +23,10 @@ def start():
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
-        ai = AIPlayer(config.buffer_size, 1, config)
+        ai = AIPlayer(config.buffer_size, 1)
         ai.save_weights(config.data.model_location+str(time())+".h5")
     else:
-        ai = AIPlayer(config.buffer_size, 1, config, weights=sorted(models)[-1])
+        ai = AIPlayer(config.buffer_size, 1, weights=sorted(models)[-1])
         
     ai.compile()
     
