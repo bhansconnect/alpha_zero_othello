@@ -31,7 +31,6 @@ class SelfPlayConfig:
 class OptimizerConfig:
     batch_size = 512
     buffer_size = 1000000
-    epochs_per_cycle = 20
     save_model_cycles = 1
     min_game_files = 100
     min_new_game_files = 10
@@ -50,7 +49,7 @@ class EvaluateConfig:
     data = DataConfig()
     
 class EloConfig:
-    game_num_per_model = 50
+    game_num_per_model = 100
     simulation_num_per_move = 50
     gpu_mem_fraction = 0.1
     model_skip = 1 # aka grab every xth model...1 being all models

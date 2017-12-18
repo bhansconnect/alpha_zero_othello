@@ -57,7 +57,7 @@ def train(ai, config):
             loaded_files = temp[1]
         file_dif = 0
         print("Iteration %04d"%i)
-        print("Training for %d epochs on %d samples" % (config.epochs_per_cycle, len(ai.buffer.buffer)))
+        print("Training for %d epochs on %d samples" % (1+2000//(len(ai.buffer.buffer)//config.batch_size), len(ai.buffer.buffer)))
         start = time()
         history = ai.train_epoch(config.batch_size, 1+2000//(len(ai.buffer.buffer)//config.batch_size), config.verbose)
         for val in history.history.keys():

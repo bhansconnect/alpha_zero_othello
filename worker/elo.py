@@ -6,6 +6,7 @@ from time import time
 import numpy as np
 import random
 import glob
+import os
 
 def start():
     config = EloConfig()
@@ -25,7 +26,7 @@ def calc_elo(config):
         if i % config.model_skip == 0 or i == len(models):
             players.append(model)
     
-    elo = np.zeros((len(players)))
+    elo = np.ones((len(players)))*1000
     game = Othello()
     
     ##give every player a random order to play games against opponents
@@ -33,19 +34,23 @@ def calc_elo(config):
     for i in range(len(players)):
         nums = [x for x in range(len(players))]
         nums.remove(i)
-        order.append(random.shuffle(nums))
+        random.shuffle(nums)
+        order.append(nums)
     
-    for i in config.game_num_per_model:
-        print("Playing game #%d for each player" % (i+1))
-        start = time()
+    start = time()
+    print("Playing random round robin with %d players and %d games per player" % (len(players), config.game_num_per_model))
+    for i in range(config.game_num_per_model//2):
+        util.progress(i, config.game_num_per_model//2, start=start)
         for j in range(len(players)):
-            util.progress(j, len(players), start=start)
+            x = i
             if i == len(players) - 1:
-                order[j] = random.shuffle(order[j])
+                random.shuffle(order[j])
             if i >= len(players) -1:
-                i %= config.game_num_per_model
+                x %= config.game_num_per_model//2
             p1 = AIPlayer(1, config.simulation_num_per_move, weights=players[j])
-            p2 = AIPlayer(1, config.simulation_num_per_move, weights=players[order[j][i]])
+            if x > len(order[j]):
+                print(i, x, config.game_num_per_model//2)
+            p2 = AIPlayer(1, config.simulation_num_per_move, weights=players[order[j][x]])
             side = -1
             while not game.game_over():
                 if side == -1:
@@ -67,9 +72,10 @@ def calc_elo(config):
                 elo[j] = 0
             if(elo[order[j][i]] < 0):
                 elo[order[j][i]] = 0
-        util.progress(len(players), len(players), start=start)
-        print(elo)
-        print(np.argsort(elo))
+            game.reset_board()
+    util.progress(config.game_num_per_model//2, config.game_num_per_model//2, start=start)
+    for i, player in enumerate(np.argsort(elo)[::-1]):
+        print("%d. %s (expected %d) with %d elo"% (i+1, os.path.basename(players[player]), len(players)-player, elo[player]))
             
 def expected(ra, rb):
     dif = ra - rb
