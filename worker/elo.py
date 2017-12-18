@@ -15,7 +15,7 @@ def start():
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
-        ai = AIPlayer(config.buffer_size, config.simulation_num_per_move)
+        ai = AIPlayer(1, config.simulation_num_per_move)
         ai.save_weights(config.data.model_location+str(time())+".h5")
     calc_elo(config)
     

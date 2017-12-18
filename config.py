@@ -7,9 +7,9 @@ def data_dir():
     return os.path.join(project_dir(), "data")
 
 class DataConfig:
-    game_location = data_dir()+'\\'+"games"+"\\"
-    model_location = data_dir()+'\\'+"models"+"\\"
-    history_location = data_dir()+'\\'+"history"+"\\"
+    game_location = data_dir()+'/'+"games"+"/"
+    model_location = data_dir()+'/'+"models"+"/"
+    history_location = data_dir()+'/'+"history"+"/"
     def __init__(self):
         if not os.path.exists(DataConfig.game_location):
             os.makedirs(DataConfig.game_location)
