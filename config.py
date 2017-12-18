@@ -46,5 +46,5 @@ class EvaluateConfig:
     simulation_num_per_move = 50
     gpu_mem_fraction = 0.1
     model_1 = "newest" # options: "newest", "random" or file name in model location
-    model_2 = "random" # options: "newest", "random" or file name in model location
+    model_2 = "1513539551.1600246.h5" # options: "newest", "random" or file name in model location
     data = DataConfig()

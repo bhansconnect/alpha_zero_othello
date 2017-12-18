@@ -35,8 +35,8 @@ def run_games(config):
     i = 0
     while(x != 0):
         x -= 1
-        print("Iteration %04d"%i)
         i += 1
+        print("Iteration %04d"%i)
         models = sorted(glob.glob(config.data.model_location+"*.h5"))
         if i == 1:
             model = models[-1]

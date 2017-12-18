@@ -40,6 +40,8 @@ def run_games(config):
         model_1 = new_1
         model_2 = new_2
         wins = 0
+        losses = 0
+        ties = 0
         print("Iteration %04d"%i)
         print("Playing %d games with %d simulations per move" % (config.game_num, config.simulation_num_per_move))
         start=time()
@@ -59,16 +61,20 @@ def run_games(config):
                         t = p2.pick_move(game, side)
                 game.play_move(t[0], t[1], side)
                 side *= -1
-            if j % 2 == 0 and game.get_winner() == -1:
+            if game.get_winner() == 0:
+                ties += 1
+            elif j % 2 == 0 and game.get_winner() == -1:
                 wins += 1
             elif j % 2 == 1 and game.get_winner() == 1:
                 wins += 1
+            else:
+                losses += 1
             game.reset_board()
         util.progress(config.game_num, config.game_num, start=start)
-        print("%s beats %s %0.2f%% of the time out of %d games" % (config.model_1, config.model_2, 
-              100*wins/config.game_num, config.game_num))
+        print("%s vs %s: wins -> %0.2f%% ties -> %0.2f%% losses -> %0.2f%% out of %d games" % (config.model_1, config.model_2, 
+              100*wins/config.game_num, 100*ties/config.game_num, 100*losses/config.game_num, config.game_num))
         total += 100*wins/config.game_num
-        print("Average Win Percent: %0.2f" % (total/i))
+        print("Average Win Percent: %0.2f%%" % (total/i))
         if not (config.repeat_with_new_model and (config.model_1 == "newest" or config.model_2 == "newest")):
             break
         
