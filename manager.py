@@ -6,8 +6,8 @@ def start():
                         " \"self\" to generate selfplay games," + 
                         " \"play\" to play the best network yourself," + 
                         " \"eval\" to evaluate the network against random or a different version" + 
-                        " or \"elo\" to calculate the elo of current models.",
-                        choices = ["opt", "self", "play", "eval", "elo"])
+                        " or \"rank\" to calculate the ranking of current models.",
+                        choices = ["opt", "self", "play", "eval", "rank"])
     
     args = parser.parse_args()
     
@@ -23,6 +23,6 @@ def start():
     elif args.mode == "eval":
         from .worker import evaluate
         evaluate.start()
-    elif args.mode == "elo":
-        from .worker import elo
-        elo.start()
+    elif args.mode == "rank":
+        from .worker import ranking
+        ranking.start()

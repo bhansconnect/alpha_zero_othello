@@ -48,11 +48,9 @@ class EvaluateConfig:
     model_2 = "1513539551.1600246.h5" # options: "newest", "random" or file name in model location
     data = DataConfig()
     
-class EloConfig:
+class RankingConfig:
     game_num_per_model = 100
-    simulation_num_per_move = 100
+    simulation_num_per_move = 50
     gpu_mem_fraction = 0.1
-    model_skip = 2 # aka grab every xth model...1 being all models
-    k_val = 32
-    min_k_val = 10 # if you want to decay the k value for less variation in ratings as time pass. use this.
+    model_skip = 10 # aka grab every xth model...1 being all models
     data = DataConfig()
