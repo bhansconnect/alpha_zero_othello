@@ -32,10 +32,13 @@ class HumanPlayer(Player):
         move = (-1, -1)
         while move not in t:
             game.print_board()
-            row = int(input("Please input row: "))
-            col = int(input("Please input col: "))
-            move = (row, col)
-            if move not in t:
+            try:
+                row = int(input("Please input row: "))
+                col = int(input("Please input col: "))
+                move = (row, col)
+                if move not in t:
+                    print("Please input a valid move")
+            except:
                 print("Please input a valid move")
         return move
             
