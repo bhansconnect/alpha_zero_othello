@@ -45,22 +45,27 @@ def run_games(config):
         print("Iteration %04d"%i)
         print("Playing %d games with %d simulations per move" % (config.game_num, config.simulation_num_per_move))
         start=time()
+        turn = 1
         for j in range(config.game_num):
             util.progress(j, config.game_num, start=start)
             side = -1
             while not game.game_over():
+                tau = config.tau_1
+                if config.tau_swap < turn:
+                    tau = config.tau_2
                 if j % 2 == 0:
                     if side == -1:
-                        t = p1.pick_move(game, side)
+                        t = p1.pick_move(game, side, tau=tau)
                     else:
-                        t = p2.pick_move(game, side)
+                        t = p2.pick_move(game, side, tau=tau)
                 else:
                     if side == 1:
-                        t = p1.pick_move(game, side)
+                        t = p1.pick_move(game, side, tau=tau)
                     else:
-                        t = p2.pick_move(game, side)
+                        t = p2.pick_move(game, side, tau=tau)
                 game.play_move(t[0], t[1], side)
                 side *= -1
+                turn += 1
             if game.get_winner() == 0:
                 ties += 1
             elif j % 2 == 0 and game.get_winner() == -1:

@@ -61,13 +61,18 @@ def calc_ranking(config):
             p2.load_weights(players[order[j][x]])
             
             side = -1
+            turn = 1
             while not game.game_over():
+                tau = config.tau_1
+                if config.tau_swap < turn:
+                    tau = config.tai_2
                 if side == -1:
-                    t = p1.pick_move(game, side)
+                    t = p1.pick_move(game, side, tau=tau)
                 else:
-                    t = p2.pick_move(game, side)
+                    t = p2.pick_move(game, side, tau=tau)
                 game.play_move(t[0], t[1], side)
                 side *= -1
+                turn += 1
             if game.get_winner() == -1:
                 win_matrix[j,order[j][x]] += 1
                 wtl[j,0] += 1

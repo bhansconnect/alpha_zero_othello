@@ -40,8 +40,11 @@ class OptimizerConfig:
     data = DataConfig()
 
 class EvaluateConfig:
-    game_num = 100
+    game_num = 10
     repeat_with_new_model = True
+    tau_1 = 1
+    tau_2 = 1e-2
+    tau_swap = 10 # change to tau_2 after this many moves
     simulation_num_per_move = 100
     gpu_mem_fraction = 0.1
     model_1 = "newest" # options: "newest", "random" or file name in model location
@@ -49,8 +52,11 @@ class EvaluateConfig:
     data = DataConfig()
     
 class RankingConfig:
-    game_num_per_model = 100
+    game_num_per_model = 20
     simulation_num_per_move = 50
+    tau_1 = 1
+    tau_2 = 1e-2
+    tau_swap = 10 # change to tau_2 after this many moves
     gpu_mem_fraction = 0.1
     model_skip = 10 # aka grab every xth model...1 being all models
     data = DataConfig()

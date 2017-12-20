@@ -2,7 +2,6 @@ from alpha_zero_othello.config import SelfPlayConfig
 from alpha_zero_othello.lib import tf_util, util
 from alpha_zero_othello.player.aiplayer import AIPlayer
 from alpha_zero_othello.othello import Othello
-from threading import Thread
 from time import time
 import psutil
 import sys
@@ -59,8 +58,7 @@ def run_games(config):
             game.reset_board()
         #print("Average Game Time: ", (time()-start)/(config.nb_game_in_file))
         util.progress(config.nb_game_in_file, config.nb_game_in_file, start=start)
-        t = Thread(target=save_games, args=(config, ai.buffer))
-        t.start()
+        save_games(config, ai.buffer)
     t.join()
     
                 

@@ -102,18 +102,13 @@ class AIPlayer(Player):
                     state[2,i,j] = 1
         return state
     
-    def pick_move(self, game, side):
+    def pick_move(self, game, side, tau=1):
         possible_moves = game.possible_moves(side)
         if len(possible_moves) == 0:
             possible_moves.append((-1,-1))
         monte_prob = self.monte_carlo(game, side)
-        
-        if self.train:
-            temp = 1
-        else:
-            temp = 0.25
            
-        monte_prob = np.float_power(monte_prob, 1/temp)
+        monte_prob = np.float_power(monte_prob, 1/tau)
         monte_prob = np.divide(monte_prob, np.sum(monte_prob))
         
         if self.train:
