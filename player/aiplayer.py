@@ -14,7 +14,7 @@ from random import random
 
 class AIPlayer(Player):
     
-    def __init__(self, buffer_size, sim_count, train=True, weights=""):
+    def __init__(self, buffer_size, sim_count, train=True, weights="", tau = 1):
         self.buffer = ReplayBuffer(buffer_size)
         self.temp_state = deque()
         self.train = train
@@ -25,6 +25,7 @@ class AIPlayer(Player):
         self.create_network()
         if weights != "":
             self.load_weights(weights)
+        self.tau = tau
     
     def set_training(self, train):
         self.train = train
@@ -102,13 +103,13 @@ class AIPlayer(Player):
                     state[2,i,j] = 1
         return state
     
-    def pick_move(self, game, side, tau=1):
+    def pick_move(self, game, side):
         possible_moves = game.possible_moves(side)
         if len(possible_moves) == 0:
             possible_moves.append((-1,-1))
         monte_prob = self.monte_carlo(game, side)
            
-        monte_prob = np.float_power(monte_prob, 1/tau)
+        monte_prob = np.float_power(monte_prob, 1/self.tau)
         monte_prob = np.divide(monte_prob, np.sum(monte_prob))
         
         if self.train:

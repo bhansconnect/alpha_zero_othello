@@ -25,7 +25,7 @@ def run_games(config):
     
     p1 = load_player(config.model_1, config)
     print("You are playing against", config.model_1)
-    print("Playing games with %d simulations per move" % config.simulation_num_per_move)
+    print("Playing games with %d simulations per move" % config.game.simulation_num_per_move)
     p2 = HumanPlayer()
     side = -1
     while not game.game_over():
@@ -56,8 +56,8 @@ def load_player(player_name, config):
         player = RandomPlayer()
     elif player_name == "newest":
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
-        player = AIPlayer(0, config.simulation_num_per_move, train=False, weights=model)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model, tau=config.game.tau_2)
     else:
         model = config.data.model_location+player_name
-        player = AIPlayer(0, config.simulation_num_per_move, train=False, weights=model)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model, tau=config.game.tau_2)
     return player

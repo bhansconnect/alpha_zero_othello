@@ -53,16 +53,20 @@ def run_games(config):
                 tau = config.game.tau_1
                 if config.game.tau_swap < turn:
                     tau = config.game.tau_2
+                if config.model_1 != "random":
+                    p1.tau =tau
+                if config.model_2 != "random":
+                    p2.tau = tau
                 if j % 2 == 0:
                     if side == -1:
-                        t = p1.pick_move(game, side, tau=tau)
+                        t = p1.pick_move(game, side)
                     else:
-                        t = p2.pick_move(game, side, tau=tau)
+                        t = p2.pick_move(game, side)
                 else:
                     if side == 1:
-                        t = p1.pick_move(game, side, tau=tau)
+                        t = p1.pick_move(game, side)
                     else:
-                        t = p2.pick_move(game, side, tau=tau)
+                        t = p2.pick_move(game, side)
                 game.play_move(t[0], t[1], side)
                 side *= -1
                 turn += 1
@@ -91,10 +95,10 @@ def create_player(player_name, current, config):
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
         if model != current:
             print("Loading new model: %s" % model)
-        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model, tau=config.game.tau_1)
     else:
         model = config.data.model_location+player_name
-        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model, tau=config.game.tau_1)
     return player, model
     
 def load_player(player, player_name, current, config):

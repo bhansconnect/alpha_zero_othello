@@ -65,11 +65,13 @@ def calc_ranking(config):
             while not game.game_over():
                 tau = config.game.tau_1
                 if config.game.tau_swap < turn:
-                    tau = config.tai_2
+                    tau = config.game.tau_2
+                p1.tau = tau
+                p2.tau = tau
                 if side == -1:
-                    t = p1.pick_move(game, side, tau=tau)
+                    t = p1.pick_move(game, side)
                 else:
-                    t = p2.pick_move(game, side, tau=tau)
+                    t = p2.pick_move(game, side)
                 game.play_move(t[0], t[1], side)
                 side *= -1
                 turn += 1

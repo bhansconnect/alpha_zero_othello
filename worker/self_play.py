@@ -52,10 +52,10 @@ def run_games(config):
             side = -1
             turn = 1
             while not game.game_over():
-                tau = config.game.tau_1
+                ai.tau = config.game.tau_1
                 if config.game.tau_swap < turn:
-                    tau = config.game.tau_2
-                t = ai.pick_move(game, side, tau=tau)
+                    ai.tau = config.game.tau_2
+                t = ai.pick_move(game, side)
                 game.play_move(t[0], t[1], side)
                 side *= -1
                 turn += 1
