@@ -16,7 +16,7 @@ def start():
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
-        ai = AIPlayer(1, config.simulation_num_per_move)
+        ai = AIPlayer(1, config.game.simulation_num_per_move)
         ai.save_weights(config.data.model_location+str(time())+".h5")
     calc_ranking(config)
     
@@ -39,8 +39,8 @@ def calc_ranking(config):
         random.shuffle(nums)
         order.append(nums)
     
-    p1 = AIPlayer(1, config.simulation_num_per_move, weights=players[0])
-    p2 = AIPlayer(1, config.simulation_num_per_move, weights=players[order[0][0]])
+    p1 = AIPlayer(1, config.game.simulation_num_per_move, weights=players[0])
+    p2 = AIPlayer(1, config.game.simulation_num_per_move, weights=players[order[0][0]])
     
     start = time()
     print("Playing random round robin with %d players and %d games per player" % (len(players), config.game_num_per_model))
@@ -63,8 +63,8 @@ def calc_ranking(config):
             side = -1
             turn = 1
             while not game.game_over():
-                tau = config.tau_1
-                if config.tau_swap < turn:
+                tau = config.game.tau_1
+                if config.game.tau_swap < turn:
                     tau = config.tai_2
                 if side == -1:
                     t = p1.pick_move(game, side, tau=tau)

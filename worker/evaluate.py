@@ -13,7 +13,7 @@ def start():
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
-        ai = AIPlayer(config.buffer_size, config.simulation_num_per_move)
+        ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)
         ai.save_weights(config.data.model_location+str(time())+".h5")
     start = time()
     run_games(config)
@@ -43,16 +43,16 @@ def run_games(config):
         losses = 0
         ties = 0
         print("Iteration %04d"%i)
-        print("Playing %d games with %d simulations per move" % (config.game_num, config.simulation_num_per_move))
+        print("Playing %d games with %d simulations per move" % (config.game_num, config.game.simulation_num_per_move))
         start=time()
-        turn = 1
         for j in range(config.game_num):
             util.progress(j, config.game_num, start=start)
             side = -1
+            turn = 1
             while not game.game_over():
-                tau = config.tau_1
-                if config.tau_swap < turn:
-                    tau = config.tau_2
+                tau = config.game.tau_1
+                if config.game.tau_swap < turn:
+                    tau = config.game.tau_2
                 if j % 2 == 0:
                     if side == -1:
                         t = p1.pick_move(game, side, tau=tau)
@@ -91,10 +91,10 @@ def create_player(player_name, current, config):
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
         if model != current:
             print("Loading new model: %s" % model)
-        player = AIPlayer(0, config.simulation_num_per_move, train=False, weights=model)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model)
     else:
         model = config.data.model_location+player_name
-        player = AIPlayer(0, config.simulation_num_per_move, train=False, weights=model)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model)
     return player, model
     
 def load_player(player, player_name, current, config):

@@ -18,14 +18,20 @@ class DataConfig:
         if not os.path.exists(DataConfig.history_location):
             os.makedirs(DataConfig.history_location)
 
-class SelfPlayConfig:
+class GameConfig:
     simulation_num_per_move = 100
+    tau_1 = 1
+    tau_2 = 1e-2
+    tau_swap = 10 # change to tau_2 after this many moves
+
+class SelfPlayConfig:
     nb_game_in_file = 10
     buffer_size = 64 * nb_game_in_file
     max_file_num = 1000  # 50000
     iterations = -1 #-1 for infinite
     gpu_mem_fraction = 0.1
     data = DataConfig()
+    game = GameConfig()
 
 
 class OptimizerConfig:
@@ -40,23 +46,19 @@ class OptimizerConfig:
     data = DataConfig()
 
 class EvaluateConfig:
-    game_num = 10
     repeat_with_new_model = True
-    tau_1 = 1
-    tau_2 = 1e-2
-    tau_swap = 10 # change to tau_2 after this many moves
-    simulation_num_per_move = 100
     gpu_mem_fraction = 0.1
     model_1 = "newest" # options: "newest", "random" or file name in model location
     model_2 = "1513539551.1600246.h5" # options: "newest", "random" or file name in model location
     data = DataConfig()
+    game = GameConfig()
+    game.simulation_num_per_move = 200
+    game_num = 10
     
 class RankingConfig:
-    game_num_per_model = 20
-    simulation_num_per_move = 50
-    tau_1 = 1
-    tau_2 = 1e-2
-    tau_swap = 10 # change to tau_2 after this many moves
+    game_num_per_model = 100
     gpu_mem_fraction = 0.1
     model_skip = 10 # aka grab every xth model...1 being all models
     data = DataConfig()
+    game = GameConfig()
+    game.simulation_num_per_move = 200
