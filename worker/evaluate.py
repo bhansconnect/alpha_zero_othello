@@ -80,7 +80,7 @@ def run_games(config):
                 losses += 1
             game.reset_board()
         util.progress(config.game_num, config.game_num, start=start)
-        print("%s vs %s: wins -> %0.2f%% ties -> %0.2f%% losses -> %0.2f%% out of %d games" % (config.model_1, config.model_2, 
+        print("%s vs %s: (%0.2f%% wins|%0.2f%% ties|%0.2f%% losses) of %d games" % (config.model_1, config.model_2, 
               100*wins/config.game_num, 100*ties/config.game_num, 100*losses/config.game_num, config.game_num))
         total += 100*wins/config.game_num
         print("Average Win Percent: %0.2f%%" % (total/i))

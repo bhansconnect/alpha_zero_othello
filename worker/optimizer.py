@@ -38,10 +38,16 @@ def train(ai, config):
     loaded_files = []
     file_dif = 0
     x = config.iterations
-    i = 0
+    i = len(glob.glob(config.data.model_location+"*.h5")) - 1
     while(x != 0):
         x -= 1
         i += 1
+        if i > config.iter3:
+            ai.update_lr(config.learning_rate3)
+        elif i > config.iter2:
+            ai.update_lr(config.learning_rate2)
+        else:
+            ai.update_lr(config.learning_rate1)
         temp = load_games(ai, loaded_files, config)
         file_dif += temp[0]
         last_dif = file_dif

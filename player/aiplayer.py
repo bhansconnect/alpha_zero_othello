@@ -66,9 +66,13 @@ class AIPlayer(Player):
         self.network = Model(x_in, [policy_out, value_out], name="reversi_model")
       
     def compile(self):
+        self.optimizer = optimizers.SGD(lr=1e-2, momentum=0.9)
         losses = [AIPlayer.objective_function_for_policy, AIPlayer.objective_function_for_value]
-        self.network.compile(optimizer=optimizers.SGD(lr=1e-2, momentum=0.9), loss=losses)
+        self.network.compile(optimizer=self.optimizer, loss=losses)
       
+    def update_lr(self, lr):
+         K.set_value(self.optimizer.lr, lr)
+        
     @staticmethod
     def objective_function_for_policy(y_true, y_pred):
         # can use categorical_crossentropy??
@@ -109,11 +113,11 @@ class AIPlayer(Player):
             possible_moves.append((-1,-1))
         monte_prob = self.monte_carlo(game, side)
            
-        monte_prob = np.float_power(monte_prob, 1/self.tau)
-        monte_prob = np.divide(monte_prob, np.sum(monte_prob))
-        
         if self.train:
             self.temp_state.append((self.preprocess_input(game.board, side), monte_prob))
+        
+        monte_prob = np.float_power(monte_prob, 1/self.tau)
+        monte_prob = np.divide(monte_prob, np.sum(monte_prob))
         
         r = random()
         for i, move in enumerate(possible_moves):
