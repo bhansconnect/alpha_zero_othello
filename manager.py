@@ -6,8 +6,9 @@ def start():
                         " \"self\" to generate selfplay games," + 
                         " \"play\" to play the best network yourself," + 
                         " \"eval\" to evaluate the network against random or a different version" + 
-                        " or \"rank\" to calculate the ranking of current models.",
-                        choices = ["opt", "self", "play", "eval", "rank"])
+                        " \"rank\" to calculate the ranking of current models." +
+                        " or \"hist\" to view the history of training.",
+                        choices = ["opt", "self", "play", "eval", "rank", "hist"])
     
     args = parser.parse_args()
     
@@ -26,3 +27,6 @@ def start():
     elif args.mode == "rank":
         from .worker import ranking
         ranking.start()
+    elif args.mode == "hist":
+        from .worker import history
+        history.start()
