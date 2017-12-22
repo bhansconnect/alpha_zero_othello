@@ -8,13 +8,14 @@ from keras.engine.training import Model
 from keras.layers import Dense, Activation, Flatten
 from keras.engine.topology import Input
 from keras.losses import mean_squared_error
+from keras.models import load_model
 from copy import deepcopy
 import numpy as np
 from random import random
 
 class AIPlayer(Player):
     
-    def __init__(self, buffer_size, sim_count, train=True, weights="", tau = 1):
+    def __init__(self, buffer_size, sim_count, train=True, model="", tau = 1, compile=False):
         self.buffer = ReplayBuffer(buffer_size)
         self.temp_state = deque()
         self.train = train
@@ -22,19 +23,25 @@ class AIPlayer(Player):
         self.acc = 0
         self.batch_count = 0
         self.sim_count = sim_count
-        self.create_network()
-        if weights != "":
-            self.load_weights(weights)
+        if model != "":
+            self.load(model, compile)
+        else:
+            self.create_network()
         self.tau = tau
     
     def set_training(self, train):
         self.train = train
     
-    def load_weights(self, file):
-        self.network.load_weights(file)
+    def load(self, file, compile=False):
+        try:
+            del self.network
+        except Exception:
+            pass
+        self.network = load_model(file, custom_objects={"objective_function_for_policy":AIPlayer.objective_function_for_policy,
+                                                        "objective_function_for_value":AIPlayer.objective_function_for_value}, compile=compile)
         
-    def save_weights(self, file):
-        self.network.save_weights(file)
+    def save(self, file):
+        self.network.save(file)
     
     def create_network(self):
         x_in = Input((3, 8, 8))
@@ -49,7 +56,7 @@ class AIPlayer(Player):
         x = Activation('relu')(x)
         x = Dense(64)(x)
         x = Activation('relu')(x)
-        x = Dense(128)(x)
+        x = Dense(64)(x)
         mlp_out = Activation('relu')(x)
         
         x = Dense(64)(mlp_out)
@@ -62,16 +69,15 @@ class AIPlayer(Player):
         x = Dense(1)(x)
         value_out = Activation('tanh')(x)
         
-        
         self.network = Model(x_in, [policy_out, value_out], name="reversi_model")
+        self.compile()
       
     def compile(self):
-        self.optimizer = optimizers.SGD(lr=1e-2, momentum=0.9)
         losses = [AIPlayer.objective_function_for_policy, AIPlayer.objective_function_for_value]
-        self.network.compile(optimizer=self.optimizer, loss=losses)
+        self.network.compile(optimizer=optimizers.SGD(lr=1e-3, momentum=0.9), loss=losses)
       
     def update_lr(self, lr):
-         K.set_value(self.optimizer.lr, lr)
+         K.set_value(self.network.optimizer.lr, lr)
         
     @staticmethod
     def objective_function_for_policy(y_true, y_pred):

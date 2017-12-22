@@ -24,11 +24,9 @@ def start():
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
         ai = AIPlayer(config.buffer_size, 1)
-        ai.save_weights(config.data.model_location+str(time())+".h5")
+        ai.save(config.data.model_location+str(time())+".h5")
     else:
-        ai = AIPlayer(config.buffer_size, 1, weights=sorted(models)[-1])
-        
-    ai.compile()
+        ai = AIPlayer(config.buffer_size, 1, model=sorted(models)[-1], compile=True)
     
     start = time()
     train(ai, config)
@@ -63,13 +61,13 @@ def train(ai, config):
             loaded_files = temp[1]
         file_dif = 0
         print("Iteration %04d"%i)
-        print("Training for %d epochs on %d samples" % (1+2000//(len(ai.buffer.buffer)//config.batch_size), len(ai.buffer.buffer)))
+        print("Training for %d epochs on %d samples" % (1+config.batches_per_iter//(len(ai.buffer.buffer)//config.batch_size), len(ai.buffer.buffer)))
         start = time()
-        history = ai.train_epoch(config.batch_size, 1+2000//(len(ai.buffer.buffer)//config.batch_size), config.verbose)
+        history = ai.train_epoch(config.batch_size, 1+config.batches_per_iter//(len(ai.buffer.buffer)//config.batch_size), config.verbose)
         for val in history.history.keys():
             print("%s: %0.4f" % (val, history.history[val][-1]))
         if i % config.save_model_cycles == 0:
-            ai.save_weights(config.data.model_location+str(time())+".h5")
+            ai.save(config.data.model_location+str(time())+".h5")
 			
         file = open(config.data.history_location+str(time())+".pickle", 'wb') 
         pickle.dump(pickle.dumps(history.history), file)

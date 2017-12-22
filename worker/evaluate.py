@@ -14,7 +14,7 @@ def start():
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
         ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)
-        ai.save_weights(config.data.model_location+str(time())+".h5")
+        ai.save(config.data.model_location+str(time())+".h5")
     start = time()
     run_games(config)
     print("Total Time: %0.2f seconds" % (time()-start))
@@ -27,7 +27,7 @@ def run_games(config):
     p1, new_1 = create_player(config.model_1, model_1, config)
     p2, new_2 = create_player(config.model_2, model_2, config)
     i = 0
-    total = 0
+    avg_wins = []
     while True:
         i += 1
         new_1 = load_player(p1, config.model_1, model_1, config)
@@ -82,8 +82,10 @@ def run_games(config):
         util.progress(config.game_num, config.game_num, start=start)
         print("%s vs %s: (%0.2f%% wins|%0.2f%% ties|%0.2f%% losses) of %d games" % (config.model_1, config.model_2, 
               100*wins/config.game_num, 100*ties/config.game_num, 100*losses/config.game_num, config.game_num))
-        total += 100*wins/config.game_num
-        print("Average Win Percent: %0.2f%%" % (total/i))
+        avg_wins.append(100*wins/config.game_num)
+        if len(avg_wins) > config.rolling_avg_amount:
+            avg_wins = avg_wins[-1*config.rolling_avg_amount:]
+        print("Average Win Percent: %0.2f%%" % (sum(avg_wins)/float(len(avg_wins))))
         if not (config.repeat_with_new_model and (config.model_1 == "newest" or config.model_2 == "newest")):
             break
         
@@ -95,10 +97,10 @@ def create_player(player_name, current, config):
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
         if model != current:
             print("Loading new model: %s" % model)
-        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model, tau=config.game.tau_1)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, model=model, tau=config.game.tau_1)
     else:
         model = config.data.model_location+player_name
-        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, weights=model, tau=config.game.tau_1)
+        player = AIPlayer(0, config.game.simulation_num_per_move, train=False, model=model, tau=config.game.tau_1)
     return player, model
     
 def load_player(player, player_name, current, config):
@@ -106,7 +108,7 @@ def load_player(player, player_name, current, config):
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
         if model != current:
             print("Loading new model: %s" % model)
-            player.load_weights(model)
+            player.load(model)
         return model
     else:
         return current

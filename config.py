@@ -10,6 +10,7 @@ class DataConfig:
     game_location = data_dir()+'/'+"games"+"/"
     model_location = data_dir()+'/'+"models"+"/"
     history_location = data_dir()+'/'+"history"+"/"
+    data_location = data_dir()+'/'
     def __init__(self):
         if not os.path.exists(DataConfig.game_location):
             os.makedirs(DataConfig.game_location)
@@ -35,6 +36,7 @@ class SelfPlayConfig:
 
 
 class OptimizerConfig:
+    batches_per_iter = 2000
     batch_size = 512
     buffer_size = 1000000
     save_model_cycles = 1
@@ -43,9 +45,9 @@ class OptimizerConfig:
     iterations = -1 #-1 for infinite
     gpu_mem_fraction = 0.6
     verbose = 0 #0,1,2 like keras model.fit
-    learning_rate1 = 1e-2
+    learning_rate1 = 1e-3
     iter2 = 200
-    learning_rate2 = 1e-3
+    learning_rate2 = 3e-4
     iter3 = 300
     learning_rate3 = 1e-4
     data = DataConfig()
@@ -54,11 +56,12 @@ class EvaluateConfig:
     repeat_with_new_model = True
     gpu_mem_fraction = 0.1
     model_1 = "newest" # options: "newest", "random" or file name in model location
-    model_2 = "1513790737.0385518.h5" # options: "newest", "random" or file name in model location
+    model_2 = "1513924188.9790366.h5" # options: "newest", "random" or file name in model location
     data = DataConfig()
     game = GameConfig()
     game.simulation_num_per_move = 50
     game_num = 100
+    rolling_avg_amount = 10
     
 class RankingConfig:
     game_num_per_model = 100

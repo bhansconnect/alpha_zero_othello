@@ -21,7 +21,7 @@ def start():
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
         ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)
-        ai.save_weights(config.data.model_location+str(time())+".h5")
+        ai.save(config.data.model_location+str(time())+".h5")
     start = time()
     run_games(config)
     print("Total Time: %0.2f seconds" % (time()-start))
@@ -40,11 +40,11 @@ def run_games(config):
         if i == 1:
             model = models[-1]
             print("Loading new model: %s" % model)
-            ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move, weights=model)
+            ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move, model=model)
         elif models[-1] != model:
             model = models[-1]
             print("Loading new model: %s" % model)
-            ai.load_weights(model)
+            ai.load(model)
 		
         start=time()
         for j in range(config.nb_game_in_file):
