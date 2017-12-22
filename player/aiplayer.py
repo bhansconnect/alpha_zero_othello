@@ -97,7 +97,7 @@ class AIPlayer(Player):
     def train_epoch(self, batch_size, epochs=1, verbose=2):
         s_buffer = np.array([_[0] for _ in self.buffer.buffer])
         p_buffer = np.array([_[1] for _ in self.buffer.buffer])
-        v_buffer = np.array([_[1] for _ in self.buffer.buffer])
+        v_buffer = np.array([_[2] for _ in self.buffer.buffer])
         history = self.network.fit(s_buffer, [p_buffer, v_buffer], batch_size=batch_size, epochs=epochs, verbose=verbose)
         return history
     
