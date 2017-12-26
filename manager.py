@@ -1,6 +1,8 @@
 import argparse
+import os
 
 def start():
+    os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3' 
     parser = argparse.ArgumentParser()
     parser.add_argument("mode", help="which mode to run in: \"opt\" to train the network," + 
                         " \"self\" to generate selfplay games," + 

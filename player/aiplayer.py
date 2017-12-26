@@ -5,7 +5,7 @@ from collections import deque, defaultdict
 import keras.backend as K
 from keras import optimizers
 from keras.engine.training import Model
-from keras.layers import Dense, Activation, Flatten
+from keras.layers import Dense, Activation, Flatten, Conv2D, BatchNormalization, Add
 from keras.engine.topology import Input
 from keras.losses import mean_squared_error
 from keras.models import load_model
@@ -32,6 +32,10 @@ class AIPlayer(Player):
     def set_training(self, train):
         self.train = train
     
+    @staticmethod
+    def clear():
+        K.clear_session()
+    
     def load(self, file, compile=False):
         try:
             del self.network
@@ -45,36 +49,58 @@ class AIPlayer(Player):
     
     def create_network(self):
         x_in = Input((3, 8, 8))
-        x = Flatten()(x_in)
-        x = Dense(256)(x)
-        x = Activation('relu')(x)
-        x = Dense(256)(x)
-        x = Activation('relu')(x)
-        x = Dense(128)(x)
-        x = Activation('relu')(x)
-        x = Dense(128)(x)
-        x = Activation('relu')(x)
-        x = Dense(64)(x)
-        x = Activation('relu')(x)
-        x = Dense(64)(x)
-        mlp_out = Activation('relu')(x)
+        x = Conv2D(filters=128, kernel_size=(3,3), padding="same", data_format="channels_first")(x_in)
+        x = BatchNormalization(axis=1)(x)
+        x = Activation("relu")(x)
+        for _ in range(2):
+            x = self._build_residual_block(x)
+
+        res_out = x
+        #x = Flatten()(x_in)
+        #x = Dense(256)(x)
+        #x = Activation('relu')(x)
+        #x = Dense(256)(x)
+        #x = Activation('relu')(x)
+        #x = Dense(128)(x)
+        #x = Activation('relu')(x)
+        #x = Dense(128)(x)
+        #x = Activation('relu')(x)
+        #x = Dense(64)(x)
+        #x = Activation('relu')(x)
+        #x = Dense(64)(x)
+        #mlp_out = Activation('relu')(x)
         
-        x = Dense(64)(mlp_out)
-        x = Activation('relu')(x)
-        x = Dense(65)(x)
-        policy_out = Activation('softmax')(x)
-        
-        x = Dense(64)(mlp_out)
-        x = Activation('relu')(x)
-        x = Dense(1)(x)
-        value_out = Activation('tanh')(x)
+        x = Conv2D(filters=2, kernel_size=1, data_format="channels_first")(res_out)
+        x = BatchNormalization(axis=1)(x)
+        x = Activation("relu")(x)
+        x = Flatten()(x)
+        policy_out = Dense(8*8+1, activation="softmax", name="policy_out")(x)
+
+        x = Conv2D(filters=1, kernel_size=1, data_format="channels_first")(res_out)
+        x = BatchNormalization(axis=1)(x)
+        x = Activation("relu")(x)
+        x = Flatten()(x)
+        x = Dense(64, activation="relu")(x)
+        value_out =  Dense(1, activation="tanh", name="value_out")(x)
         
         self.network = Model(x_in, [policy_out, value_out], name="reversi_model")
         self.compile()
       
+    def _build_residual_block(self, x):
+        in_x = x
+        x = Conv2D(filters=128, kernel_size=(3,3), padding="same", data_format="channels_first")(x)
+        x = BatchNormalization(axis=1)(x)
+        x = Activation("relu")(x)
+        x = Conv2D(filters=128, kernel_size=(3,3), padding="same", data_format="channels_first")(x)
+        x = BatchNormalization(axis=1)(x)
+        x = Add()([in_x, x])
+        x = Activation("relu")(x)
+        return x
+        
     def compile(self):
         losses = [AIPlayer.objective_function_for_policy, AIPlayer.objective_function_for_value]
         self.network.compile(optimizer=optimizers.SGD(lr=1e-3, momentum=0.9), loss=losses)
+        #self.network.compile(optimizer=optimizers.Nadam(), loss=losses)
       
     def update_lr(self, lr):
          K.set_value(self.network.optimizer.lr, lr)

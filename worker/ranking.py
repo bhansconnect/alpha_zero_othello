@@ -49,13 +49,12 @@ def calc_ranking(config):
         ordering = [x for x in range(len(players))]
         random.shuffle(ordering)
         for j in ordering:
+            AIPlayer.clear()
             x = i
             if x >= len(order[j]):
                 x %= len(order[j])
                 if x == 0:
                     random.shuffle(order[j])
-            if x > len(order[j]):
-                print(i, x, config.game_num_per_model//2)
             
             p1.load(players[j])
             p2.load(players[order[j][x]])
