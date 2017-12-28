@@ -10,7 +10,6 @@ def start():
     config = EvaluateConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
 
-    
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
         ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)
@@ -32,7 +31,7 @@ def run_games(config):
         i += 1
         new_1 = load_player(p1, config.model_1, model_1, config)
         new_2 = load_player(p2, config.model_2, model_2, config)
-        while(new_1 == model_1 and new_2 == model_2):
+        while((config.model_1 == "newest" and new_1 == model_1) or (config.model_2 == "newest" and new_2 == model_2)):
             #print("Waiting on new model. Sleeping for 1 minute.")
             sleep(60)
             new_1 = load_player(p1, config.model_1, model_1, config)

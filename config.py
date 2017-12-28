@@ -54,19 +54,17 @@ class OptimizerConfig:
 
 class EvaluateConfig:
     repeat_with_new_model = True
-    gpu_mem_fraction = 0.99
+    gpu_mem_fraction = 0.6
     model_1 = "newest" # options: "newest", "random" or file name in model location
     model_2 = "1514221408.2203352.h5" # options: "newest", "random" or file name in model location
     data = DataConfig()
     game = GameConfig()
-    game.simulation_num_per_move = 50
     game_num = 100
     rolling_avg_amount = 10
     
 class RankingConfig:
-    game_num_per_model = 100
+    game_num_per_model = 400
     gpu_mem_fraction = 0.99
     model_skip = 1 # aka grab every xth model...1 being all models
     data = DataConfig()
     game = GameConfig()
-    game.simulation_num_per_move = 50
