@@ -36,7 +36,7 @@ def train(ai, config):
     loaded_files = []
     file_dif = 0
     x = config.iterations
-    i = len(glob.glob(config.data.model_location+"*.h5")) - 1
+    i = len(glob.glob(config.data.model_location+"*.h5"))
     while(x != 0):
         x -= 1
         i += 1

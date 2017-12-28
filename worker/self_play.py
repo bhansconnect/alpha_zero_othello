@@ -31,13 +31,12 @@ def run_games(config):
     game = Othello()
     model = ""
     x = config.iterations
-    i = 0
     while(x != 0):
         x -= 1
-        i += 1
+        i = len(glob.glob(config.data.game_location+"*.pickle")) + 1
         print("Iteration %04d"%i)
         models = sorted(glob.glob(config.data.model_location+"*.h5"))
-        if i == 1:
+        if model == "":
             model = models[-1]
             print("Loading new model: %s" % model)
             ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move, model=model)

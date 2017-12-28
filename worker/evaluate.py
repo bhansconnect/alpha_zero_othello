@@ -26,7 +26,7 @@ def run_games(config):
     model_2 = ""
     p1, new_1 = create_player(config.model_1, model_1, config)
     p2, new_2 = create_player(config.model_2, model_2, config)
-    i = 0
+    i = len(glob.glob(config.data.model_location+"*.h5"))
     avg_wins = []
     while True:
         i += 1
