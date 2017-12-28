@@ -15,10 +15,9 @@ def start():
                 data[k] = []
             for item in v:
                 data[k].append(item)
-    legend = []
-    for k, v in data.items():
-        legend.append(k)
-        plt.plot(v)
-    plt.legend(legend)
+    for i, kv in enumerate(data.items()):
+        plt.subplot(1, len(data), i+1)
+        plt.title(kv[0])
+        plt.plot(kv[1])
     plt.show()
         
