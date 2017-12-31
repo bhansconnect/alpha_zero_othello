@@ -30,20 +30,20 @@ class SelfPlayConfig:
     buffer_size = 64 * nb_game_in_file
     max_file_num = 10000  # 50000
     iterations = -1 #-1 for infinite
-    gpu_mem_fraction = 0.39
+    gpu_mem_fraction = 0.249
     data = DataConfig()
     game = GameConfig()
 
 
 class OptimizerConfig:
-    batches_per_iter = 5000
+    batches_per_iter = 2000
     batch_size = 64
     buffer_size = 1000000
     save_model_cycles = 1
     min_game_files = 100
-    min_new_game_files = 10
+    min_new_game_files = 50
     iterations = -1 #-1 for infinite
-    gpu_mem_fraction = 0.6
+    gpu_mem_fraction = 0.5
     verbose = 0 #0,1,2 like keras model.fit
     learning_rate1 = 1e-3
     iter2 = 50
