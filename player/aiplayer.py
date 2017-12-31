@@ -120,11 +120,21 @@ class AIPlayer(Player):
                 t = self.temp_state.pop()
                 self.buffer.add((t[0], t[1], winner))
     
-    def train_epoch(self, batch_size, epochs=1, verbose=2):
-        s_buffer = np.array([_[0] for _ in self.buffer.buffer])
-        p_buffer = np.array([_[1] for _ in self.buffer.buffer])
-        v_buffer = np.array([_[2] for _ in self.buffer.buffer])
-        history = self.network.fit(s_buffer, [p_buffer, v_buffer], batch_size=batch_size, epochs=epochs, verbose=verbose)
+    def train_batches(self, batch_size, batches=-1, verbose=2):
+        if batches == -1:
+            s_buffer = np.array([_[0] for _ in self.buffer.buffer])
+            p_buffer = np.array([_[1] for _ in self.buffer.buffer])
+            v_buffer = np.array([_[2] for _ in self.buffer.buffer])
+        else:
+            sample_size = batch_size*batches
+            sample = []
+            while sample_size > 0:
+                sample += self.buffer.sample(sample_size)
+                sample_size -= self.buffer.size()
+            s_buffer = np.array([_[0] for _ in sample])
+            p_buffer = np.array([_[1] for _ in sample])
+            v_buffer = np.array([_[2] for _ in sample])
+        history = self.network.fit(s_buffer, [p_buffer, v_buffer], batch_size=batch_size, epochs=1, verbose=verbose)
         return history
     
     def preprocess_input(self, board, side):

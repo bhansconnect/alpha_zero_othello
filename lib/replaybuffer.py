@@ -27,15 +27,15 @@ class ReplayBuffer(object):
     def size(self):
         return self.count
 
-    def sample_batch(self, batch_size):
-        batch = []
+    def sample(self, sample_size):
+        sample = []
 
-        if self.count < batch_size:
-            batch = random.sample(self.buffer, self.count)
+        if self.count < sample_size:
+            sample = random.sample(self.buffer, self.count)
         else:
-            batch = random.sample(self.buffer, batch_size)
+            sample = random.sample(self.buffer, sample_size)
 
-        return batch
+        return sample
 
     def save(self, filename):
         file = open(filename, 'wb') 
