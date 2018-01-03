@@ -56,7 +56,7 @@ class EvaluateConfig:
     repeat_with_new_model = True
     gpu_mem_fraction = 0.5
     model_1 = "newest" # options: "newest", "random" or file name in model location
-    model_2 = "1514657265.8571532.h5" # options: "newest", "random" or file name in model location
+    model_2 = "random" # options: "newest", "random" or file name in model location
     data = DataConfig()
     game = GameConfig()
     game.simulation_num_per_move = 50
