@@ -154,9 +154,9 @@ class AIPlayer(Player):
         if len(possible_moves) == 0:
             possible_moves.append((-1,-1))
         monte_prob = self.monte_carlo(game, side)
-           
+        
         if self.train:
-            self.temp_state.append((self.preprocess_input(game.board, side), monte_prob))
+            self.temp_state.append((self.preprocess_input(game.board, side), np.divide(monte_prob, np.sum(monte_prob))))
         
         monte_prob = np.float_power(monte_prob, 1/self.tau)
         monte_prob = np.divide(monte_prob, np.sum(monte_prob))

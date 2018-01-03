@@ -64,9 +64,9 @@ class EvaluateConfig:
     rolling_avg_amount = 10
     
 class RankingConfig:
-    game_num_per_model = 400
-    gpu_mem_fraction = 0.5
-    model_skip = 1 # aka grab every xth model...1 being all models
+    game_num_per_model = 100
+    gpu_mem_fraction = 0.99
+    model_skip = 2 # aka grab every xth model...1 being all models
     data = DataConfig()
     game = GameConfig()
     game.simulation_num_per_move = 50
