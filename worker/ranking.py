@@ -12,7 +12,7 @@ import os
 def start():
     config = RankingConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
-    AIPlayer.create_if_nonexistant()
+    AIPlayer.create_if_nonexistant(config)
     calc_ranking(config)
     
 def calc_ranking(config):

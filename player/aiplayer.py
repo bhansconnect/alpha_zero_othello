@@ -12,6 +12,7 @@ from keras.models import load_model
 from copy import deepcopy
 import numpy as np
 from random import random
+from time import time
 
 class AIPlayer(Player):
     
@@ -30,7 +31,7 @@ class AIPlayer(Player):
         self.tau = tau
 
     @staticmethod
-    def create_if_nonexistant():
+    def create_if_nonexistant(config):
         models = glob.glob(config.data.model_location + "*.h5")
         if len(models) == 0:
             ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)

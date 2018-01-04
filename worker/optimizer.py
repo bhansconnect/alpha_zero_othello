@@ -13,7 +13,7 @@ def start():
     config = OptimizerConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
     util.set_high_process_priority()
-    AIPlayer.create_if_nonexistant()
+    AIPlayer.create_if_nonexistant(config)
     models = glob.glob(config.data.model_location+"*.h5")
     ai = AIPlayer(config.buffer_size, 1, model=sorted(models)[-1], compile=True)
     train(ai, config)

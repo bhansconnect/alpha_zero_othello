@@ -10,7 +10,7 @@ def start():
     config = SelfPlayConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
     util.set_low_process_priority()
-    AIPlayer.create_if_nonexistant()
+    AIPlayer.create_if_nonexistant(config)
     run_games(config)
     
 def run_games(config):

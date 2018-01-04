@@ -9,7 +9,7 @@ import glob
 def start():
     config = EvaluateConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
-    AIPlayer.create_if_nonexistant()
+    AIPlayer.create_if_nonexistant(config)
     run_games(config)
     
 def run_games(config):
