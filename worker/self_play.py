@@ -3,20 +3,13 @@ from alpha_zero_othello.lib import tf_util, util
 from alpha_zero_othello.player.aiplayer import AIPlayer
 from alpha_zero_othello.othello import Othello
 from time import time
-import psutil
-import sys
 import glob
 import os
 
 def start():
     config = SelfPlayConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
-    p = psutil.Process(os.getpid())
-    if sys.platform == "win32":
-        p.nice(psutil.BELOW_NORMAL_PRIORITY_CLASS)
-    else:
-        p.nice(5)
-
+    util.set_low_process_priority()
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:

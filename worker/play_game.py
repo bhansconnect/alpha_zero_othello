@@ -10,7 +10,6 @@ import glob
 def start():
     config = EvaluateConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
-
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:

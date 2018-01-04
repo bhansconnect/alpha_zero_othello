@@ -12,7 +12,6 @@ import os
 def start():
     config = RankingConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
-
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:

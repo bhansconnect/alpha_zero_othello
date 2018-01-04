@@ -6,20 +6,13 @@ try:
    import cPickle as pickle
 except:
    import pickle
-import psutil
 import os
-import sys
 import glob
-
 
 def start():
     config = OptimizerConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
-    p = psutil.Process(os.getpid())
-    if sys.platform == "win32":
-        p.nice(psutil.ABOVE_NORMAL_PRIORITY_CLASS)
-    else:
-        p.nice(-5)
+    util.set_high_process_priority()
     
     models = glob.glob(config.data.model_location+"*.h5")
     if len(models) == 0:
