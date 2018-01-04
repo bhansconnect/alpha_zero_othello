@@ -54,7 +54,7 @@ class OptimizerConfig:
 
 class EvaluateConfig:
     repeat_with_new_model = True
-    gpu_mem_fraction = 0.5
+    gpu_mem_fraction = 0.249
     model_1 = "newest" # options: "newest", "random" or file name in model location
     model_2 = "random" # options: "newest", "random" or file name in model location
     data = DataConfig()
