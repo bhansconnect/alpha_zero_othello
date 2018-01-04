@@ -28,7 +28,15 @@ class AIPlayer(Player):
         else:
             self.create_network()
         self.tau = tau
-    
+
+    @staticmethod
+    def create_if_nonexistant():
+        models = glob.glob(config.data.model_location + "*.h5")
+        if len(models) == 0:
+            ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)
+            ai.save(config.data.model_location + str(time()) + ".h5")
+            del ai
+
     def set_training(self, train):
         self.train = train
     

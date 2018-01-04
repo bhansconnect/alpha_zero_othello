@@ -10,11 +10,7 @@ import glob
 def start():
     config = EvaluateConfig()
     tf_util.update_memory(config.gpu_mem_fraction)
-    
-    models = glob.glob(config.data.model_location+"*.h5")
-    if len(models) == 0:
-        ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)
-        ai.save(config.data.model_location+str(time())+".h5")
+    AIPlayer.create_if_nonexistant()
     run_games(config)
              
     
