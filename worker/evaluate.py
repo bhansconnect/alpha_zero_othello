@@ -38,7 +38,7 @@ def run_games(config):
         print("Playing %d games with %d simulations per move" % (config.game_num, config.game.simulation_num_per_move))
         start=time()
         for j in range(config.game_num):
-            util.progress(j, config.game_num, start=start)
+            util.print_progress_bar(j, config.game_num, start=start)
             side = -1
             turn = 1
             while not game.game_over():
@@ -71,7 +71,7 @@ def run_games(config):
             else:
                 losses += 1
             game.reset_board()
-        util.progress(config.game_num, config.game_num, start=start)
+        util.print_progress_bar(config.game_num, config.game_num, start=start)
         print("%s vs %s: (%0.2f%% wins|%0.2f%% ties|%0.2f%% losses) of %d games" % (config.model_1, config.model_2, 
               100*wins/config.game_num, 100*ties/config.game_num, 100*losses/config.game_num, config.game_num))
         avg_wins.append(100*wins/config.game_num)

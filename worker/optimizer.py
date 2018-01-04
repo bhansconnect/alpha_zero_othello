@@ -37,19 +37,19 @@ def train(ai, config):
         last_dif = file_dif
         loaded_files = temp[1]
         start = time()
-        util.progress(0, config.min_new_game_files, start=start)
+        util.print_progress_bar(0, config.min_new_game_files, start=start)
         while(len(loaded_files) < config.min_game_files or file_dif < config.min_new_game_files):
             if last_dif != file_dif:
                 last_dif = file_dif
                 if config.min_game_files-len(loaded_files) > 0:
-                    util.progress(len(loaded_files), config.min_game_files, start=start)
+                    util.print_progress_bar(len(loaded_files), config.min_game_files, start=start)
                 else:
-                    util.progress(file_dif, config.min_new_game_files, start=start)
+                    util.print_progress_bar(file_dif, config.min_new_game_files, start=start)
             sleep(60)
             temp = load_games(ai, loaded_files, config)
             file_dif += temp[0]
             loaded_files = temp[1]
-        util.progress(config.min_new_game_files, config.min_new_game_files, start=start)
+        util.print_progress_bar(config.min_new_game_files, config.min_new_game_files, start=start)
         file_dif = 0
         print("Iteration %04d"%i)
         print("Training for %d batches on %d samples" % (config.batches_per_iter, len(ai.buffer.buffer)))

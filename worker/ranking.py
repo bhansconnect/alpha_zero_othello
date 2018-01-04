@@ -40,7 +40,7 @@ def calc_ranking(config):
     start = time()
     print("Playing random round robin with %d players and %d games per player" % (len(players), config.game_num_per_model))
     for i in range(config.game_num_per_model//2):
-        util.progress(i, config.game_num_per_model//2, start=start)
+        util.print_progress_bar(i, config.game_num_per_model // 2, start=start)
         ordering = [x for x in range(len(players))]
         random.shuffle(ordering)
         for j in ordering:
@@ -83,7 +83,7 @@ def calc_ranking(config):
                 wtl[j,1] += 1
                 wtl[order[j][x],1] += 1
             game.reset_board()
-    util.progress(config.game_num_per_model//2, config.game_num_per_model//2, start=start)
+    util.print_progress_bar(config.game_num_per_model // 2, config.game_num_per_model // 2, start=start)
     params = choix.ilsr_pairwise_dense(win_matrix)
     print("\nRankings:")
     for i, player in enumerate(np.argsort(params)[::-1]):

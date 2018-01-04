@@ -3,7 +3,7 @@ from time import time
 import psutil
 import os
 
-def progress(count, total, start=0):
+def print_progress_bar(count, total, start=0):
     bar_len = 60
     filled_len = int(round(bar_len * count / float(total)))
 
