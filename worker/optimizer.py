@@ -1,6 +1,6 @@
-from alpha_zero_othello.config import OptimizerConfig
-from alpha_zero_othello.lib import tf_util, util
-from alpha_zero_othello.player.aiplayer import AIPlayer
+from config import OptimizerConfig
+from lib import tf_util, util
+from player.aiplayer import AIPlayer
 from time import time, sleep
 try:
    import cPickle as pickle

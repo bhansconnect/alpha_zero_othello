@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from alpha_zero_othello.othello import Othello
+from othello import Othello
 import random
 
 class Player(ABC):

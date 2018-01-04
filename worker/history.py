@@ -1,4 +1,4 @@
-from alpha_zero_othello.config import DataConfig
+from config import DataConfig
 import matplotlib.pyplot as plt
 import pickle
 import glob

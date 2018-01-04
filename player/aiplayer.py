@@ -1,6 +1,6 @@
-from alpha_zero_othello.player.player import Player
-from alpha_zero_othello.othello import Othello
-from alpha_zero_othello.lib.replaybuffer import ReplayBuffer
+from player.player import Player
+from othello import Othello
+from lib.replaybuffer import ReplayBuffer
 from collections import deque, defaultdict
 import keras.backend as K
 from keras import optimizers
@@ -13,6 +13,7 @@ from copy import deepcopy
 import numpy as np
 from random import random
 from time import time
+import glob
 
 class AIPlayer(Player):
     

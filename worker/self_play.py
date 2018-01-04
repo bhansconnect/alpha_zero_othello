@@ -1,7 +1,7 @@
-from alpha_zero_othello.config import SelfPlayConfig
-from alpha_zero_othello.lib import tf_util, util
-from alpha_zero_othello.player.aiplayer import AIPlayer
-from alpha_zero_othello.othello import Othello
+from config import SelfPlayConfig
+from lib import tf_util, util
+from player.aiplayer import AIPlayer
+from othello import Othello
 from time import time
 import glob
 import os
