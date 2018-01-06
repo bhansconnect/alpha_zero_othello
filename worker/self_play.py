@@ -54,7 +54,7 @@ def run_games(config):
                 
 def save_games(config, buffer):
     buffer.save(config.data.game_location+str(time())+".pickle")
-    games = glob.glob(config.data.game_location+"*.pickle")
+    games = sorted(glob.glob(config.data.game_location+"*.pickle"))
     if len(games) > config.max_file_num:
         for file in sorted(games)[:-1*config.max_file_num]:
             os.remove(file)

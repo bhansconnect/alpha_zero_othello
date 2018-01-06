@@ -5,7 +5,7 @@ import glob
 
 def start():
     config = DataConfig()
-    histories = glob.glob(config.history_location+"*.pickle")
+    histories = sorted(glob.glob(config.history_location+"*.pickle"))
     data = {}
     for hist in histories:
         file = open(hist, 'rb') 

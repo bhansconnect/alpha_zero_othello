@@ -37,9 +37,7 @@ class HumanPlayer(Player):
                 if move not in t:
                     game.print_board()
                     print("Please input a valid move")
-            except (KeyboardInterrupt, SystemExit):
-                raise
-            except:
+            except Exception:
                 game.print_board()
                 print("Please input a valid move")
         print()

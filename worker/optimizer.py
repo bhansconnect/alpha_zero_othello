@@ -14,8 +14,8 @@ def start():
     tf_util.update_memory(config.gpu_mem_fraction)
     util.set_high_process_priority()
     AIPlayer.create_if_nonexistant(config)
-    models = glob.glob(config.data.model_location+"*.h5")
-    ai = AIPlayer(config.buffer_size, 1, model=sorted(models)[-1], compile=True)
+    models = sorted(glob.glob(config.data.model_location+"*.h5"))
+    ai = AIPlayer(config.buffer_size, 1, model=models[-1], compile=True)
     train(ai, config)
     
 def train(ai, config):
@@ -32,23 +32,19 @@ def train(ai, config):
             ai.update_lr(config.learning_rate2)
         else:
             ai.update_lr(config.learning_rate1)
-        temp = load_games(ai, loaded_files, config)
-        file_dif += temp[0]
-        last_dif = file_dif
-        loaded_files = temp[1]
+        loaded_files = load_games(ai, loaded_files, config)
+        length = 0
         start = time()
         util.print_progress_bar(0, config.min_new_game_files, start=start)
-        while(len(loaded_files) < config.min_game_files or file_dif < config.min_new_game_files):
-            if last_dif != file_dif:
-                last_dif = file_dif
+        while(len(loaded_files) < config.min_game_files or len(loaded_files)%config.min_new_game_files != 0):
+            if length != len(loaded_files):
+                length = len(loaded_files)
                 if config.min_game_files-len(loaded_files) > 0:
                     util.print_progress_bar(len(loaded_files), config.min_game_files, start=start)
                 else:
-                    util.print_progress_bar(file_dif, config.min_new_game_files, start=start)
+                    util.print_progress_bar(length%config.min_new_game_files, config.min_new_game_files, start=start)
             sleep(60)
-            temp = load_games(ai, loaded_files, config)
-            file_dif += temp[0]
-            loaded_files = temp[1]
+            loaded_files = load_games(ai, loaded_files, config)
         util.print_progress_bar(config.min_new_game_files, config.min_new_game_files, start=start)
         file_dif = 0
         print("Iteration %04d"%i)
@@ -66,9 +62,8 @@ def train(ai, config):
         print("Iteration Time: %0.2f" % (time()-start))
 
 def load_games(ai, loaded_files, config):
-    games = glob.glob(config.data.game_location+"*.pickle")
+    games = sorted(glob.glob(config.data.game_location+"*.pickle"))
     new = [game for game in games if game not in loaded_files]
-    dif = len(new)
     for game in sorted(new):
         ai.buffer.load(game)
-    return dif, games
+    return games

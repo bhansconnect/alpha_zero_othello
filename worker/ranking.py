@@ -16,7 +16,7 @@ def start():
     calc_ranking(config)
     
 def calc_ranking(config):
-    models = glob.glob(config.data.model_location+"*.h5")
+    models = sorted(glob.glob(config.data.model_location+"*.h5"))
     players = []
     for i, model in enumerate(models):
         if i % config.model_skip == 0 or i == len(models):
@@ -90,8 +90,3 @@ def calc_ranking(config):
         print("%d. %s (expected %d) with %0.2f rating and results of %d-%d-%d"% (i+1, os.path.basename(players[player]), 
             len(players)-player, params[player], wtl[player,0], wtl[player,1], wtl[player,2]))
     print("\n(Rating Diff, Winrate) -> (0.5, 62%), (1, 73%), (2, 88%), (3, 95%), (5, 99%)")
-            
-def expected(ra, rb):
-    dif = ra - rb
-    denom = 1 + 10**(dif/400)
-    return 1/denom
