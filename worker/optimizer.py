@@ -23,6 +23,7 @@ def train(ai, config):
     file_dif = 0
     x = config.iterations
     i = len(glob.glob(config.data.model_location+"*.h5"))
+    last_iter_files = 0
     while(x != 0):
         x -= 1
         i += 1
@@ -33,10 +34,10 @@ def train(ai, config):
         else:
             ai.update_lr(config.learning_rate1)
         loaded_files = load_games(ai, loaded_files, config)
-        length = 0
+        length = len(loaded_files)
         start = time()
         util.print_progress_bar(0, config.min_new_game_files, start=start)
-        while(len(loaded_files) < config.min_game_files or len(loaded_files)%config.min_new_game_files != 0):
+        while(len(loaded_files) < config.min_game_files or len(loaded_files)%config.min_new_game_files != 0 or last_iter_files == length):
             if length != len(loaded_files):
                 length = len(loaded_files)
                 if config.min_game_files-len(loaded_files) > 0:
@@ -46,6 +47,7 @@ def train(ai, config):
             sleep(60)
             loaded_files = load_games(ai, loaded_files, config)
         util.print_progress_bar(config.min_new_game_files, config.min_new_game_files, start=start)
+        last_iter_files = length
         file_dif = 0
         print("Iteration %04d"%i)
         print("Training for %d batches on %d samples" % (config.batches_per_iter, len(ai.buffer.buffer)))
