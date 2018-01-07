@@ -4,11 +4,10 @@ A Python program for learning to play Othello/Reversi from zero. The best part i
 to plug this same algorithm into many other games. If you have any questions. feel free to contact me:
 brendan.hansknecht@gmail.com
 
-The program is currently working. I am trying to train and decent network. Then I will work on upgrading
-the interfaces such that self play games are not through the command line. I also will work on buffing out
+The program is currently working. I am trying to train and decent network. I also will work on buffing out
 this README and the instructions.
 
-Requires Tensorflow, Keras, and Pickle. After that, all other libraries should be installed by them.
+Requires Tensorflow, Keras, Tkinter, and Pickle. After that, all other libraries should be installed by them.
 Will eventually add a requirements.txt
 
 This version currently uses a smaller neural network for testing purposes as things are confirmed
