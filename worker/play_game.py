@@ -6,6 +6,7 @@ from othello import Othello
 from random import random
 from tkinter import Tk, Canvas
 import threading
+import time
 import glob
 
 def start():
