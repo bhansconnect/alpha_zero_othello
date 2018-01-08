@@ -145,6 +145,11 @@ class AIPlayer(Player):
                     state[2,i,j] = 1
         return state
     
+    def evaluate(self, game, side):
+        current_input = self.preprocess_input(game.board, side)
+        pred = self.network.predict(current_input[np.newaxis,:])
+        return pred[1][0]
+    
     def pick_move(self, game, side):
         possible_moves = game.possible_moves(side)
         if len(possible_moves) == 0:

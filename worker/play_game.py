@@ -29,6 +29,8 @@ class AppLogic(threading.Thread):
     def run(self):
         self.game_gui = Canvas(self.root, width=600, height=600, background='green')
         self.game_gui.bind("<Button-1>", self.click)
+        self.game_gui.focus_set()
+        self.game_gui.bind("<Key>", self.key)
         self.game_gui.pack()
         for i in range(1, 8):
             self.game_gui.create_line(0, i*75, 600, i*75)
@@ -57,15 +59,18 @@ class AppLogic(threading.Thread):
         #print("Playing games with %d simulations per move" % config.game.simulation_num_per_move)
         self.side = -1
         self.draw_board()
+        self.value = ai.evaluate(self.game, self.side)
         while self.running and not self.game.game_over():
             #play move
             if self.side != self.human:
-                self.root.title("Othello (Thinking of Move)")
+                self.value = ai.evaluate(self.game, self.side)
+                self.root.title("Othello (Thinking of Move) Current Value: %0.2f (1 white wins, -1 black wins)" % self.value)
                 self.root.config(cursor="wait")
                 t = ai.pick_move(self.game, self.side)
                 self.game.play_move(t[0], t[1], self.side)
                 self.draw_board()
                 self.side *= -1
+                self.value = ai.evaluate(self.game, self.side)
             else:
                 if len(self.game.possible_moves(self.side)) == 0:
                     self.side *= -1
@@ -74,7 +79,7 @@ class AppLogic(threading.Thread):
                     color = "black"
                 else:
                     color = "white"
-                self.root.title("Othello (Play as %s)" % color)
+                self.root.title("Othello (Play as %s) Current Value: %0.2f (1 white wins, -1 black wins)" % (color, self.value))
                 self.root.config(cursor="")
                 if self.update:
                     self.update = False
@@ -90,7 +95,12 @@ class AppLogic(threading.Thread):
         else:
             self.root.title("Othello (You Lose!)")
 
+    def key(self, event):
+        if event.char == "z":
+            self.human *= -1
+
     def click(self, event):
+        self.game_gui.focus_set()
         if self.human == self.side and not self.update:
             if self.x != event.x//75 or self.y != event.y//75:
                 self.update = True
