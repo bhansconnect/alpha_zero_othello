@@ -20,13 +20,9 @@ def start():
     
 def train(ai, config):
     loaded_files = []
-    file_dif = 0
     x = config.iterations
     i = len(glob.glob(config.data.model_location+"*.h5"))
-    last_iter_files = 0
     while(x != 0):
-        x -= 1
-        i += 1
         if i > config.iter3:
             ai.update_lr(config.learning_rate3)
         elif i > config.iter2:
@@ -34,22 +30,19 @@ def train(ai, config):
         else:
             ai.update_lr(config.learning_rate1)
         loaded_files = load_games(ai, loaded_files, config)
-        length = len(loaded_files)
+        length = 0
         start = time()
-        util.print_progress_bar(0, config.min_new_game_files, start=start)
-        while(len(loaded_files) < config.min_game_files or len(loaded_files)%config.min_new_game_files != 0 or last_iter_files == length):
+        print("Iteration %04d"%i)
+        progress_start = (i-2)*config.min_new_game_files+config.min_game_files if i > 1 else 0
+        progress_end = (i-1)*config.min_new_game_files+config.min_game_files
+        util.print_progress_bar(0, progress_end-progress_start, start=start)
+        while(len(loaded_files) < config.min_game_files or ((len(loaded_files)-config.min_game_files)//config.min_new_game_files)+1 < i):
             if length != len(loaded_files):
                 length = len(loaded_files)
-                if config.min_game_files-len(loaded_files) > 0:
-                    util.print_progress_bar(len(loaded_files), config.min_game_files, start=start)
-                else:
-                    util.print_progress_bar(length%config.min_new_game_files, config.min_new_game_files, start=start)
-            sleep(60)
+                util.print_progress_bar(length-progress_start, progress_end-progress_start, start=start)
+            sleep(5)
             loaded_files = load_games(ai, loaded_files, config)
-        util.print_progress_bar(config.min_new_game_files, config.min_new_game_files, start=start)
-        last_iter_files = length
-        file_dif = 0
-        print("Iteration %04d"%i)
+        util.print_progress_bar(progress_end-progress_start, progress_end-progress_start, start=start)
         print("Training for %d batches on %d samples" % (config.batches_per_iter, len(ai.buffer.buffer)))
         start = time()
         history = ai.train_batches(config.batch_size, config.batches_per_iter, config.verbose)
@@ -62,6 +55,8 @@ def train(ai, config):
         pickle.dump(pickle.dumps(history.history), file)
         file.close() 
         print("Iteration Time: %0.2f" % (time()-start))
+        x -= 1
+        i += 1
 
 def load_games(ai, loaded_files, config):
     games = sorted(glob.glob(config.data.game_location+"*.pickle"))

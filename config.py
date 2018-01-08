@@ -28,7 +28,7 @@ class GameConfig:
 class SelfPlayConfig:
     nb_game_in_file = 10
     buffer_size = 64 * nb_game_in_file
-    max_file_num = 10000  # 50000
+    max_file_num = 2000  # 50000
     iterations = -1 #-1 for infinite
     gpu_mem_fraction = 0.249
     data = DataConfig()
@@ -51,6 +51,7 @@ class OptimizerConfig:
     iter3 = 100
     learning_rate3 = 1e-4
     data = DataConfig()
+    game = GameConfig()
 
 class EvaluateConfig:
     repeat_with_new_model = True
