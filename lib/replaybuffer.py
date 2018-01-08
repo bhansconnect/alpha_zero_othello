@@ -43,13 +43,16 @@ class ReplayBuffer(object):
         file.close() 
     
     def load(self, filename):
-        file = open(filename, 'rb') 
-        if len(self.buffer) == 0:
-            self.buffer = pickle.loads(pickle.load(file))
-        else:
-            buf = pickle.loads(pickle.load(file))
-            self.merge(buf)
-        file.close() 
+        try:
+            file = open(filename, 'rb') 
+            if len(self.buffer) == 0:
+                self.buffer = pickle.loads(pickle.load(file))
+            else:
+                buf = pickle.loads(pickle.load(file))
+                self.merge(buf)
+            file.close() 
+        except Exception:
+            pass
 
     def clear(self):
         self.buffer.clear()
