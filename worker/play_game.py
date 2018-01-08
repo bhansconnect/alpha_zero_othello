@@ -8,11 +8,12 @@ from tkinter import Tk, Canvas
 import threading
 import time
 import glob
+import sys
 
 def start():
     root = Tk()
     AppLogic(root)
-    root.mainloop() 
+    root.mainloop()
 
 class AppLogic(threading.Thread):
 
@@ -24,6 +25,7 @@ class AppLogic(threading.Thread):
         self.x = -1
         self.y = -1
         self.start()
+    
     def run(self):
         self.game_gui = Canvas(self.root, width=600, height=600, background='green')
         self.game_gui.bind("<Button-1>", self.click)
