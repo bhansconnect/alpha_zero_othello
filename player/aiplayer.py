@@ -66,19 +66,6 @@ class AIPlayer(Player):
             x = self._build_residual_block(x)
 
         res_out = x
-        #x = Flatten()(x_in)
-        #x = Dense(256)(x)
-        #x = Activation('relu')(x)
-        #x = Dense(256)(x)
-        #x = Activation('relu')(x)
-        #x = Dense(128)(x)
-        #x = Activation('relu')(x)
-        #x = Dense(128)(x)
-        #x = Activation('relu')(x)
-        #x = Dense(64)(x)
-        #x = Activation('relu')(x)
-        #x = Dense(64)(x)
-        #mlp_out = Activation('relu')(x)
         
         x = Conv2D(filters=2, kernel_size=1, data_format="channels_first")(res_out)
         x = BatchNormalization(axis=1)(x)
@@ -110,7 +97,6 @@ class AIPlayer(Player):
     def compile(self):
         losses = [AIPlayer.objective_function_for_policy, AIPlayer.objective_function_for_value]
         self.network.compile(optimizer=optimizers.SGD(lr=1e-3, momentum=0.9), loss=losses)
-        #self.network.compile(optimizer=optimizers.Nadam(), loss=losses)
       
     def update_lr(self, lr):
          K.set_value(self.network.optimizer.lr, lr)

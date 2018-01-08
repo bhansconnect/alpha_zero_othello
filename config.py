@@ -60,7 +60,6 @@ class EvaluateConfig:
     model_2 = "random" # options: "newest", "random" or file name in model location
     data = DataConfig()
     game = GameConfig()
-    game.simulation_num_per_move = 50
     game_num = 100
     rolling_avg_amount = 10
     
@@ -70,4 +69,3 @@ class RankingConfig:
     model_skip = 1 # aka grab every xth model...1 being all models
     data = DataConfig()
     game = GameConfig()
-    game.simulation_num_per_move = 50
