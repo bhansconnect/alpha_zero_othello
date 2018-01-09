@@ -67,5 +67,6 @@ class RankingConfig:
     game_num_per_model = 100
     gpu_mem_fraction = 0.99
     model_skip = 1 # aka grab every xth model...1 being all models
+    print_king = False
     data = DataConfig()
     game = GameConfig()

@@ -44,7 +44,8 @@ def calc_ranking(config):
         else:
             msg = "King is "+os.path.basename(players[king_index]).split(".")[0]
         king.load(players[king_index])
-        print(msg.ljust(90))
+        if config.print_king:
+            print(msg.ljust(90))
         for j in range(len(players)):
             util.print_progress_bar(i*len(players) + j, total_games, start=start)
             
