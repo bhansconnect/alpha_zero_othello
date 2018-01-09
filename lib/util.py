@@ -12,33 +12,31 @@ def print_progress_bar(count, total, start=0):
     
     if percents == 100:
         if start == 0:
-            sys.stdout.write('[%s] %d%%\n' % (bar, percents))
+            msg = '[%s] %d%%\n' % (bar, percents)
         else:
             elapsed = time() - start
             if elapsed > 3600:
                 elapsed /= 3600
-                sys.stdout.write('[%s] %d%% total: %0.2f hours   \n' % (bar, percents, elapsed))
+                msg = '[%s] %d%% total: %0.2f hours\n' % (bar, percents, elapsed)
             elif elapsed > 60:
                 elapsed /= 60
-                sys.stdout.write('[%s] %d%% total: %0.2f minutes \n' % (bar, percents, elapsed))
+                msg = '[%s] %d%% total: %0.2f minutes\n' % (bar, percents, elapsed)
             else:
-                sys.stdout.write('[%s] %d%% total: %0.2f seconds \n' % (bar, percents, elapsed))
-        sys.stdout.flush()
-        return
-    
-    if start == 0 or percents == 0:
-        sys.stdout.write('[%s] %d%%\r' % (bar, percents))
+                msg = '[%s] %d%% total: %0.2f seconds\n' % (bar, percents, elapsed)
+    elif start == 0 or percents == 0:
+        msg = '[%s] %d%%\r' % (bar, percents)
     else:
         elapsed = time() - start
         eta = elapsed / (percents/100) - elapsed
         if eta > 3600:
             eta /= 3600
-            sys.stdout.write('[%s] %d%% eta: %0.2f hours   \r' % (bar, percents, eta))
+            msg = '[%s] %d%% eta: %0.2f hours   \r' % (bar, percents, eta)
         elif eta > 60:
             eta /= 60
-            sys.stdout.write('[%s] %d%% eta: %0.2f minutes \r' % (bar, percents, eta))
+            msg = '[%s] %d%% eta: %0.2f minutes \r' % (bar, percents, eta)
         else:
-            sys.stdout.write('[%s] %d%% eta: %0.2f seconds \r' % (bar, percents, eta))
+            msg = '[%s] %d%% eta: %0.2f seconds \r' % (bar, percents, eta)
+    sys.stdout.write(msg[:-1].ljust(89)+msg[-1])
     sys.stdout.flush()
     
 def set_low_process_priority():
