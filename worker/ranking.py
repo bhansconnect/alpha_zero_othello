@@ -6,6 +6,7 @@ from time import time
 import numpy as np
 import random
 import choix
+import math
 import glob
 import os
 
@@ -29,13 +30,13 @@ def calc_ranking(config):
     king_index = len(players)-1
     king = AIPlayer(0, config.game.simulation_num_per_move, train=False, model=players[king_index], tau=config.game.tau_1)
     challenger = AIPlayer(0, config.game.simulation_num_per_move, train=False, model=players[0], tau=config.game.tau_1)
-    total_games = config.game_num_per_model * len(players)
-    
+    total_games = (config.game_num_per_model * (len(players)))//2
+    played_games = 0
     start = time()
     print("Playing king of the hill with %d players and %d games per player" % (len(players), config.game_num_per_model))
     if config.game_num_per_model < len(players):
         print("We suggest that you increase games per player to be greater than players")
-    for i in range(config.game_num_per_model):
+    for i in range(math.ceil(total_games/(len(players)-1))):
         AIPlayer.clear()
         king_index = getKingIndex(win_matrix)
         if king_index == -1:
@@ -47,7 +48,7 @@ def calc_ranking(config):
         if config.print_king:
             print(msg.ljust(90))
         for j in range(len(players)):
-            util.print_progress_bar(i*len(players) + j, total_games, start=start)
+            util.print_progress_bar(played_games, total_games, start=start)
             
             if j == king_index:
                 continue
@@ -91,6 +92,9 @@ def calc_ranking(config):
                 wtl[king_index,1] += 1
                 wtl[j,1] += 1
             game.reset_board()
+            played_games += 1
+            if played_games == total_games:
+                break
     util.print_progress_bar(total_games, total_games, start=start)
     try:
         params = choix.ilsr_pairwise_dense(win_matrix)
