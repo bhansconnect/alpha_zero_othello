@@ -24,3 +24,8 @@ rank to compare multiple models
 
 I generally run 2 instances self playing games and 1 optimizing while training it.
 Config.py has all of the options. 
+
+As a side note, it is possible to train on multiple servers by setting up a shared drive between multiple computers
+from that shared drive, you can run the program on multiple computers and they will all generate self play games.
+That being said, you would still be limited to one optimizer. Luckily, it takes much less time to optimize than
+self play games.
