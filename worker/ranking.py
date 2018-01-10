@@ -39,7 +39,8 @@ def calc_ranking(config):
     for i in range(math.ceil(total_games/(len(players)-1))):
         AIPlayer.clear()
         king_index = getKingIndex(win_matrix)
-        if king_index == -1:
+        #first round robin then switch to king
+        if king_index == -1 or i < len(players):
             king_index = (len(players)-1)-i%len(players)
             msg = "No King Yet"
         else:
