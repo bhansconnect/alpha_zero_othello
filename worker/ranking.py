@@ -41,7 +41,7 @@ def calc_ranking(config):
     for i in itertools.count():
         ranks = getRankings(win_matrix)
 
-        if len(ranks) == 0 or played_games < config.roundrobin_percent*total_games:
+        if len(ranks) == 0:
             msg = "No Clear Best Yet"
         else:
             msg = "Current Best is "+util.getPlayerName(players[ranks[-1]])   
