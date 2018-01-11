@@ -52,3 +52,6 @@ def set_high_process_priority():
         p.nice(psutil.ABOVE_NORMAL_PRIORITY_CLASS)
     else:
         p.nice(-5)
+        
+def getPlayerName(player):
+    return os.path.basename(player).split(".")[0]

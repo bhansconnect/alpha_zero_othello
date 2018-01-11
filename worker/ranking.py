@@ -44,7 +44,7 @@ def calc_ranking(config):
         if len(ranks) == 0 or played_games < config.roundrobin_percent*total_games:
             msg = "No Clear Best Yet"
         else:
-            msg = "Current Best is "+os.path.basename(players[ranks[-1]]).split(".")[0]    
+            msg = "Current Best is "+util.getPlayerName(players[ranks[-1]])   
         if config.print_ranking_while_running:
             print(msg.ljust(90))
         for j in range(len(players)):
@@ -56,10 +56,6 @@ def calc_ranking(config):
                 challenger1_index = normalChoiceAroundPlayer(ranks, my_rank)
             else:
                 challenger1_index = getLeastPlayed(win_matrix, j)
-            
-            if challenger1_index == j:
-                print("error")
-                exit()
             
             AIPlayer.clear()
             challenger1.load(players[challenger1_index])
@@ -116,14 +112,14 @@ def calc_ranking(config):
         print("\nRankings:")
         for i, player in enumerate(np.argsort(params)[::-1]):
             print("%d. %s (expected %d) with %0.2f rating and results of %d-%d-%d"% 
-                  (i+1, getPlayerName(players, player), len(players)-player, params[player],
+                  (i+1, util.getPlayerName(players[player]), len(players)-player, params[player],
                     wtl[player,0], wtl[player,1], wtl[player,2]))
         print("\n(Rating Diff, Winrate) -> (0.5, 62%), (1, 73%), (2, 88%), (3, 95%), (5, 99%)")
     except Exception:
         print("\n Not Enough data to calculate rankings")
         print("\nResults:")
         for player in range(win_matrix.shape[0]):
-            print("%s results of %d-%d-%d"% (getPlayerName(players, player), wtl[player,0], wtl[player,1],
+            print("%s results of %d-%d-%d"% (util.getPlayerName(players[player]), wtl[player,0], wtl[player,1],
                                              wtl[player,2]))
     
 def getRankings(win_matrix):
@@ -145,9 +141,6 @@ def getLeastPlayed(win_matrix, player):
             least_played_opponent = i
             min_plays = plays
     return least_played_opponent
-
-def getPlayerName(players, index):
-    return os.path.basename(players[index]).split(".")[0]
 
 def normalChoiceAroundPlayer(ranks, player_rank, reach=None):
     # if mean is the players location if removed from list
