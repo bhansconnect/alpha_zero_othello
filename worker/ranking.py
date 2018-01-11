@@ -24,7 +24,7 @@ def calc_ranking(config):
         if i % config.model_skip == 0 or i == len(models):
             players.append(model)
     
-    wtl = np.zeros((len(players), 3))
+    wtl = np.zeros((len(players), len(players), 3))
     win_matrix = np.zeros((len(players),len(players)))
     game = Othello()
     
@@ -86,41 +86,35 @@ def calc_ranking(config):
                 turn += 1
             if game.get_winner() == challenger1_side:
                 win_matrix[challenger1_index,j] += 1
-                wtl[challenger1_index,0] += 1
-                wtl[j,2] += 1
+                wtl[challenger1_index, j,0] += 1
             elif game.get_winner() == -1*challenger1_side:
                 win_matrix[j, challenger1_index] += 1
-                wtl[challenger1_index,2] += 1
-                wtl[j,0] += 1
+                wtl[challenger1_index, j,2] += 1
             else:
                 win_matrix[challenger1_index,j] += 0.5
                 win_matrix[j, challenger1_index] += 0.5
-                wtl[challenger1_index,1] += 1
-                wtl[j,1] += 1
+                wtl[challenger1_index, j, 1] += 1
             game.reset_board()
             played_games += 1
             if played_games >= total_games:
                 finished = True
                 break
+        saveWTL(config, players, wtl)
+        wtl = np.zeros((len(players), len(players), 3))
         if finished:
             break
-    util.print_progress_bar(total_games, total_games, start=start)   
+    util.print_progress_bar(total_games, total_games, start=start) 
     print("\nWin Matrix(row beat column):")
     print(win_matrix)
     try:
         params = choix.ilsr_pairwise_dense(win_matrix)
         print("\nRankings:")
         for i, player in enumerate(np.argsort(params)[::-1]):
-            print("%d. %s (expected %d) with %0.2f rating and results of %d-%d-%d"% 
-                  (i+1, util.getPlayerName(players[player]), len(players)-player, params[player],
-                    wtl[player,0], wtl[player,1], wtl[player,2]))
+            print("%d. %s (expected %d) with %0.2f rating"% 
+                  (i+1, util.getPlayerName(players[player]), len(players)-player, params[player]))
         print("\n(Rating Diff, Winrate) -> (0.5, 62%), (1, 73%), (2, 88%), (3, 95%), (5, 99%)")
     except Exception:
-        print("\n Not Enough data to calculate rankings")
-        print("\nResults:")
-        for player in range(win_matrix.shape[0]):
-            print("%s results of %d-%d-%d"% (util.getPlayerName(players[player]), wtl[player,0], wtl[player,1],
-                                             wtl[player,2]))
+        print("\nNot Enough data to calculate rankings")
     
 def getRankings(win_matrix):
     try:
@@ -160,3 +154,8 @@ def normalChoiceAroundPlayer(ranks, player_rank, reach=None):
         index = math.floor(random.gauss(mean, stddev) + 0.5)
         if 0 <= index < len(ranks_without_self):
             return ranks_without_self[index]
+        
+def saveWTL(config, players, wtl):
+    for i in range(wtl.shape[0]):
+        for j in range(wtl.shape[1]):
+            util.saveWTL(config, util.getPlayerName(players[i]), util.getPlayerName(players[j]), wtl[i,j,0], wtl[i,j,1], wtl[i,j,2])

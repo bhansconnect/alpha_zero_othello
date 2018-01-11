@@ -7,9 +7,10 @@ def data_dir():
     return os.path.join(project_dir(), "data")
 
 class DataConfig:
-    game_location = data_dir()+'/'+"games"+"/"
-    model_location = data_dir()+'/'+"models"+"/"
-    history_location = data_dir()+'/'+"history"+"/"
+    game_location = data_dir()+'/games/'
+    model_location = data_dir()+'/models/'
+    history_location = data_dir()+'/history/'
+    performance_location = data_dir()+'/performance/'
     data_location = data_dir()+'/'
     def __init__(self):
         if not os.path.exists(DataConfig.game_location):
@@ -18,6 +19,8 @@ class DataConfig:
             os.makedirs(DataConfig.model_location)
         if not os.path.exists(DataConfig.history_location):
             os.makedirs(DataConfig.history_location)
+        if not os.path.exists(DataConfig.performance_location):
+            os.makedirs(DataConfig.performance_location)
 
 class GameConfig:
     simulation_num_per_move = 100
@@ -65,7 +68,7 @@ class EvaluateConfig:
     
 class RankingConfig:
     game_num_per_model = 100
-    gpu_mem_fraction = 0.99
+    gpu_mem_fraction = 0.249
     model_skip = 1 # aka grab every xth model...1 being all models
     print_ranking_while_running = True
     roundrobin_percent = 0.5 #ie first 50 percent of games will be roundrobin, then will switch to

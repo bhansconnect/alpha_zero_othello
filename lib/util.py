@@ -1,7 +1,12 @@
 import sys
 from time import time
 import psutil
+import glob
 import os
+try:
+   import cPickle as pickle
+except:
+   import pickle
 
 def print_progress_bar(count, total, start=0):
     bar_len = 60
@@ -55,3 +60,44 @@ def set_high_process_priority():
         
 def getPlayerName(player):
     return os.path.basename(player).split(".")[0]
+
+def saveWTL(config, p1, p2, w, t, l):
+    if w > 0 or t > 0 or l > 0:
+        data = {
+            "player1": p1,
+            "player2": p2,
+            "wins": w,
+            "ties": t,
+            "losses": l}
+        pickle.dump(data, open(config.data.performance_location+"staged_"+str(time())+".pickle","wb"))
+
+def mergeStagedWTL(config):
+    merged_data = []
+    if os.path.isfile(config.data.performance_location+"wins_ties_losses.pickle"):
+        merged_data = pickle.load(open(config.data.performance_location+"wins_ties_losses.pickle", "rb"))
+
+    files = glob.glob(config.data.performance_location+"staged_*.pickle")
+    for file in files:
+        try:
+            data = pickle.load(open(file, "rb"))
+            found = False
+            for i in range(len(merged_data)):
+                if merged_data[i]['player1'] == data['player1'] and merged_data[i]['player2'] == data['player2']:
+                    found = True
+                    merged_data[i]['wins'] += data['wins']
+                    merged_data[i]['ties'] += data['ties']
+                    merged_data[i]['losses'] += data['losses']
+                    break
+                elif merged_data[i]['player1'] == data['player2'] and merged_data[i]['player2'] == data['player1']:
+                    found = True
+                    merged_data[i]['wins'] += data['losses']
+                    merged_data[i]['ties'] += data['ties']
+                    merged_data[i]['losses'] += data['wins']
+                    break
+            if not found:
+                merged_data.append(data)
+            os.remove(file)
+        except Exception as e:
+            continue
+    pickle.dump(merged_data, open(config.data.performance_location+"wins_ties_losses.pickle","wb"))
+    return merged_data

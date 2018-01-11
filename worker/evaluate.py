@@ -78,6 +78,13 @@ def run_games(config):
         if len(avg_wins) > config.rolling_avg_amount:
             avg_wins = avg_wins[-1*config.rolling_avg_amount:]
         print("Average Win Percent: %0.2f%%" % (sum(avg_wins)/float(len(avg_wins))))
+        if config.model_1 != "random" and config.model_2 != "random":
+            util.saveWTL(config, util.getPlayerName(model_1), util.getPlayerName(model_2), wins, ties, losses)
+        elif config.model_1 == "random":
+            util.saveWTL(config, config.model_1, util.getPlayerName(model_2), wins, ties, losses)
+        elif config.model_2 == "random":
+            util.saveWTL(config, util.getPlayerName(model_1), config.model_2, wins, ties, losses)
+        
         if not (config.repeat_with_new_model and (config.model_1 == "newest" or config.model_2 == "newest")):
             break
         
