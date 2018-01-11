@@ -14,6 +14,7 @@ def start():
         time.sleep(0.1)
         df = util.mergeStagedWTL(config)
     players = list(df)
+    print("\n",players)
     win_matrix = df.as_matrix()
     print("\nTotal Games: ", np.sum(win_matrix))
     print("\nWin Matrix(row beat column):")

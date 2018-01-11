@@ -59,8 +59,8 @@ class OptimizerConfig:
 class EvaluateConfig:
     repeat_with_new_model = True
     gpu_mem_fraction = 0.249
-    model_1 = "newest" # options: "newest", "random" or file name in model location
-    model_2 = "random" # options: "newest", "random" or file name in model location
+    model_1 = "newest" # options: "newest", "random" or model name(no .h5)
+    model_2 = "random" # options: "newest", "random" or model name(no .h5)
     data = DataConfig()
     game = GameConfig()
     game_num = 100
@@ -71,7 +71,5 @@ class RankingConfig:
     gpu_mem_fraction = 0.249
     model_skip = 1 # aka grab every xth model...1 being all models
     print_best = True
-    roundrobin_percent = 0.5 #ie first 50 percent of games will be roundrobin, then will switch to
-                             #normal distribution over ranking to pick opponent
     data = DataConfig()
     game = GameConfig()

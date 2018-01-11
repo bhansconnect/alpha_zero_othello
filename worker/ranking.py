@@ -49,7 +49,6 @@ def calc_ranking(config):
         for j in range(len(players)):
             util.print_progress_bar(played_games, total_games, start=start)
             
-            #either challenge people around you with normal distribution or play least played
             challenger1_index = getLeastPlayed(win_matrix, j)
             
             AIPlayer.clear()

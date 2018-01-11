@@ -18,7 +18,10 @@ def run_games(config):
     model_2 = ""
     p1, new_1 = create_player(config.model_1, model_1, config)
     p2, new_2 = create_player(config.model_2, model_2, config)
-    i = len(glob.glob(config.data.model_location+"*.h5"))
+    if config.model_1 == "newest" or config.model_2 == "newest":
+        i = len(glob.glob(config.data.model_location+"*.h5"))
+    else:
+        i = 0
     avg_wins = []
     while True:
         i += 1
@@ -64,12 +67,13 @@ def run_games(config):
                 turn += 1
             if game.get_winner() == 0:
                 ties += 1
-            elif j % 2 == 0 and game.get_winner() == -1:
+                savePerformance(config, 0, 1, 0)
+            elif (j % 2 == 0 and game.get_winner() == -1) or (j % 2 == 1 and game.get_winner() == 1):
                 wins += 1
-            elif j % 2 == 1 and game.get_winner() == 1:
-                wins += 1
+                savePerformance(config, 1, 0, 0)
             else:
                 losses += 1
+                savePerformance(config, 0, 0, 1)
             game.reset_board()
         util.print_progress_bar(config.game_num, config.game_num, start=start)
         print("%s vs %s: (%0.2f%% wins|%0.2f%% ties|%0.2f%% losses) of %d games" % (config.model_1, config.model_2, 
@@ -78,13 +82,6 @@ def run_games(config):
         if len(avg_wins) > config.rolling_avg_amount:
             avg_wins = avg_wins[-1*config.rolling_avg_amount:]
         print("Average Win Percent: %0.2f%%" % (sum(avg_wins)/float(len(avg_wins))))
-        if config.model_1 != "random" and config.model_2 != "random":
-            util.saveWTL(config, util.getPlayerName(model_1), util.getPlayerName(model_2), wins, ties, losses)
-        elif config.model_1 == "random":
-            util.saveWTL(config, config.model_1, util.getPlayerName(model_2), wins, ties, losses)
-        elif config.model_2 == "random":
-            util.saveWTL(config, util.getPlayerName(model_1), config.model_2, wins, ties, losses)
-        util.mergeStagedWTL(config)
         
         if not (config.repeat_with_new_model and (config.model_1 == "newest" or config.model_2 == "newest")):
             break
@@ -99,7 +96,7 @@ def create_player(player_name, current, config):
             print("Loading new model: %s" % model)
         player = AIPlayer(0, config.game.simulation_num_per_move, train=False, model=model, tau=config.game.tau_1)
     else:
-        model = config.data.model_location+player_name
+        model = config.data.model_location+player_name+".h5"
         player = AIPlayer(0, config.game.simulation_num_per_move, train=False, model=model, tau=config.game.tau_1)
     return player, model
     
@@ -112,3 +109,7 @@ def load_player(player, player_name, current, config):
         return model
     else:
         return current
+    
+def savePerformance(config, wins, ties, losses):
+    util.saveWTL(config, config.model_1, config.model_2, wins, ties, losses)
+    util.mergeStagedWTL(config)
