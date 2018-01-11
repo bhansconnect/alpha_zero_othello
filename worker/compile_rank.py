@@ -2,11 +2,17 @@ from config import RankingConfig
 from lib import util
 import numpy as np
 import choix
+import time
 
 def start():
     config = RankingConfig()
     print("Merging Staged Files")
     df = util.mergeStagedWTL(config)
+    if df is None:
+        print("Issue loading file, will keep trying")
+    while df is None:
+        time.sleep(0.1)
+        df = util.mergeStagedWTL(config)
     players = list(df)
     win_matrix = df.as_matrix()
     print("\nTotal Games: ", np.sum(win_matrix))

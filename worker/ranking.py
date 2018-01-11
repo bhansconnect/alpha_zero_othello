@@ -135,3 +135,4 @@ def saveWTL(config, players, wtl):
     for i in range(wtl.shape[0]):
         for j in range(wtl.shape[1]):
             util.saveWTL(config, util.getPlayerName(players[i]), util.getPlayerName(players[j]), wtl[i,j,0], wtl[i,j,1], wtl[i,j,2])
+    util.mergeStagedWTL(config)

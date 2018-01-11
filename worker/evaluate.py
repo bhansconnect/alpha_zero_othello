@@ -84,6 +84,7 @@ def run_games(config):
             util.saveWTL(config, config.model_1, util.getPlayerName(model_2), wins, ties, losses)
         elif config.model_2 == "random":
             util.saveWTL(config, util.getPlayerName(model_1), config.model_2, wins, ties, losses)
+        util.mergeStagedWTL(config)
         
         if not (config.repeat_with_new_model and (config.model_1 == "newest" or config.model_2 == "newest")):
             break
