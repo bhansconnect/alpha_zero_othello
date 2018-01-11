@@ -6,7 +6,6 @@ try:
    import cPickle as pickle
 except:
    import pickle
-import os
 import glob
 
 def start():

@@ -9,7 +9,6 @@ import random
 import choix
 import glob
 import math
-import os
 
 def start():
     config = RankingConfig()

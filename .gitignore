@@ -83,3 +83,4 @@ ENV/
 #generated data
 *.h5
 *.pickle
+*.csv

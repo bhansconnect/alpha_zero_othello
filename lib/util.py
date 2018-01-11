@@ -1,5 +1,6 @@
 import sys
 from time import time
+import pandas as pd
 import psutil
 import glob
 import os
@@ -73,9 +74,6 @@ def saveWTL(config, p1, p2, w, t, l):
 
 def mergeStagedWTL(config):
     merged_data = []
-    if os.path.isfile(config.data.performance_location+"wins_ties_losses.pickle"):
-        merged_data = pickle.load(open(config.data.performance_location+"wins_ties_losses.pickle", "rb"))
-
     files = glob.glob(config.data.performance_location+"staged_*.pickle")
     for file in files:
         try:
@@ -99,5 +97,21 @@ def mergeStagedWTL(config):
             os.remove(file)
         except Exception as e:
             continue
-    pickle.dump(merged_data, open(config.data.performance_location+"wins_ties_losses.pickle","wb"))
-    return merged_data
+    
+    if os.path.isfile(config.data.performance_location+"win_matrix.csv"):
+        df = pd.read_csv(config.data.performance_location+"win_matrix.csv", index_col=0)
+    else:
+        df = pd.DataFrame()
+    for elem in merged_data:
+        if not elem["player1"] in list(df):
+            df[elem["player1"]] = 0
+            df.loc[elem["player1"]] = 0
+            df = df.sort_index(axis=0).sort_index(axis=1)
+        if not elem["player2"] in list(df):
+            df[elem["player2"]] = 0
+            df.loc[elem["player2"]] = 0
+            df = df.sort_index(axis=0).sort_index(axis=1)
+        df.at[elem["player1"], elem["player2"]] = df.at[elem["player1"], elem["player2"]] + elem["wins"] + 0.5*elem["ties"]
+        df.at[elem["player2"], elem["player1"]] = df.at[elem["player2"], elem["player1"]] + elem["losses"] + 0.5*elem["ties"]
+    df.to_csv(config.data.performance_location+"win_matrix.csv")
+    return df

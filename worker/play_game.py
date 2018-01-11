@@ -8,7 +8,6 @@ from tkinter import Tk, Canvas
 import threading
 import time
 import glob
-import sys
 
 def start():
     root = Tk()
