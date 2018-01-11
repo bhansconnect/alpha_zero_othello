@@ -70,7 +70,7 @@ class RankingConfig:
     game_num_per_model = 100
     gpu_mem_fraction = 0.249
     model_skip = 1 # aka grab every xth model...1 being all models
-    print_ranking_while_running = True
+    print_best = True
     roundrobin_percent = 0.5 #ie first 50 percent of games will be roundrobin, then will switch to
                              #normal distribution over ranking to pick opponent
     data = DataConfig()

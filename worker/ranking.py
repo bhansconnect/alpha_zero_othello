@@ -44,17 +44,13 @@ def calc_ranking(config):
             msg = "No Clear Best Yet"
         else:
             msg = "Current Best is "+util.getPlayerName(players[ranks[-1]])   
-        if config.print_ranking_while_running:
+        if config.print_best:
             print(msg.ljust(90))
         for j in range(len(players)):
             util.print_progress_bar(played_games, total_games, start=start)
             
             #either challenge people around you with normal distribution or play least played
-            if len(ranks) != 0 and played_games > config.roundrobin_percent*total_games:
-                my_rank = ranks.index(j)
-                challenger1_index = normalChoiceAroundPlayer(ranks, my_rank)
-            else:
-                challenger1_index = getLeastPlayed(win_matrix, j)
+            challenger1_index = getLeastPlayed(win_matrix, j)
             
             AIPlayer.clear()
             challenger1.load(players[challenger1_index])
@@ -134,25 +130,6 @@ def getLeastPlayed(win_matrix, player):
             least_played_opponent = i
             min_plays = plays
     return least_played_opponent
-
-def normalChoiceAroundPlayer(ranks, player_rank, reach=None):
-    # if mean is the players location if removed from list
-    mean = player_rank-0.5
-    if mean < 0:
-        mean = 0
-    ranks_without_self = ranks[:player_rank] + ranks[player_rank+1 :]
-    if reach is None:
-        reach = len(ranks_without_self)/2
-    
-    stddev = len(ranks_without_self) * ((reach/len(ranks_without_self))/2)
-    
-    if mean > len(ranks_without_self)-1:
-        mean = len(ranks_without_self)-1
-    
-    while True:
-        index = math.floor(random.gauss(mean, stddev) + 0.5)
-        if 0 <= index < len(ranks_without_self):
-            return ranks_without_self[index]
         
 def saveWTL(config, players, wtl):
     for i in range(wtl.shape[0]):
