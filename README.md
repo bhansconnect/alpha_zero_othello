@@ -16,12 +16,12 @@ to be working, I will upgrade to full size.
 
 Currently run by calling "python alpha_zero_othello\run.py {self, opt, eval, play, rank, compile_rank}"
 
-Self for it to generate self play games.
-Opt for it to update the network.
-eval to compare different versions.
-play to play against it yourself.
-rank to compare multiple models
-compile_rank to load all ranking/eval history into one comparison
+* self for it to generate self play games.
+* opt for it to update the network.
+* eval to compare different versions.
+* play to play against it yourself.
+* rank to compare multiple models
+* compile_rank to load all ranking/eval history into one comparison
 
 I generally run 2 instances self playing games and 1 optimizing while training it.
 Config.py has all of the options. 
