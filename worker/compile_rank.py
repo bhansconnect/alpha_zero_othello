@@ -3,6 +3,7 @@ from lib import util
 import numpy as np
 import choix
 import time
+import os
 
 def start():
     config = RankingConfig()
@@ -10,6 +11,10 @@ def start():
     df = util.mergeStagedWTL(config)
     if df is None:
         print("Issue loading file, will keep trying")
+        print("If this error doesn't go away soon, you may need to delete %s"%
+              os.path.normpath(config.data.performance_location+"temp_win_matrix.csv"))
+        print("You could also try manually merging it with %s"%
+              os.path.normpath(config.data.performance_location+"win_matrix.csv"))
     while df is None:
         time.sleep(0.1)
         df = util.mergeStagedWTL(config)

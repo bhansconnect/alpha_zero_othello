@@ -120,15 +120,17 @@ def getRankings(win_matrix):
     
 def getLeastPlayed(win_matrix, player):
     min_plays = float("inf")
-    least_played_opponent = -1
+    least_played_opponents = []
     for i in range(win_matrix.shape[0]):
         if i == player:
             continue
         plays = win_matrix[i,player] + win_matrix[player,i]
-        if least_played_opponent == -1 or plays < min_plays:
-            least_played_opponent = i
+        if len(least_played_opponents) == 0 or plays < min_plays:
+            least_played_opponents = [i]
             min_plays = plays
-    return least_played_opponent
+        elif plays == min_plays:
+            least_played_opponents.append(i)
+    return np.random.choice(least_played_opponents)
         
 def saveWTL(config, players, wtl):
     for i in range(wtl.shape[0]):

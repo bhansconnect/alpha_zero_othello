@@ -1,7 +1,8 @@
 import sys
-from time import time
+from time import time, sleep
 import pandas as pd
 import psutil
+import shutil
 import glob
 import os
 try:
@@ -73,16 +74,11 @@ def saveWTL(config, p1, p2, w, t, l):
         pickle.dump(data, open(config.data.performance_location+"staged_"+str(time())+".pickle","wb"))
 
 def mergeStagedWTL(config):
-    #only run if win_matrix.csv not in use
-    if checkFileOpen(config.data.performance_location+"win_matrix.csv"):
+    #only run if not already merging in another process
+    if os.path.exists(config.data.performance_location+"win_matrix_temp.csv"):
         return None
-    
-    if os.path.exists(config.data.performance_location+"win_matrix.csv"):
-        df = pd.read_csv(config.data.performance_location+"win_matrix.csv", index_col=0)
-        win_matrix_file = open(config.data.performance_location+"win_matrix.csv", "w")
     else:
-        df = pd.DataFrame()
-        win_matrix_file = open(config.data.performance_location+"win_matrix.csv", "w+")
+        win_matrix_file = open(config.data.performance_location+"win_matrix_temp.csv", "w+")
         
     merged_data = []
     files = glob.glob(config.data.performance_location+"staged_*.pickle")
@@ -109,6 +105,11 @@ def mergeStagedWTL(config):
         except Exception as e:
             continue
     
+    if os.path.exists(config.data.performance_location+"win_matrix.csv"):
+        df = pd.read_csv(config.data.performance_location+"win_matrix.csv", index_col=0)    
+    else:
+        df = pd.DataFrame()
+    
     for elem in merged_data:
         if not elem["player1"] in list(df):
             df[elem["player1"]] = 0
@@ -122,6 +123,11 @@ def mergeStagedWTL(config):
         df.at[elem["player2"], elem["player1"]] = df.at[elem["player2"], elem["player1"]] + elem["losses"] + 0.5*elem["ties"]
     df.to_csv(win_matrix_file)
     win_matrix_file.close()
+    if checkFileOpen(config.data.performance_location+"win_matrix.csv"):
+        print("Waiting for %s to be close."% os.path.normpath(config.data.performance_location+"win_matrix.csv"))
+    while checkFileOpen(config.data.performance_location+"win_matrix.csv"):
+        sleep(0.1)
+    shutil.move(config.data.performance_location+"win_matrix_temp.csv", config.data.performance_location+"win_matrix.csv")
     return df
 
 def checkFileOpen(filename):

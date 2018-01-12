@@ -38,6 +38,7 @@ def run_games(config):
         losses = 0
         ties = 0
         print("Iteration %04d"%i)
+        print("Playing games between %s and %s" % (config.model_1, config.model_2))
         print("Playing %d games with %d simulations per move" % (config.game_num, config.game.simulation_num_per_move))
         start=time()
         for j in range(config.game_num):
