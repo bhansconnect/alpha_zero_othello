@@ -25,7 +25,8 @@ def start():
     print("\nWin Matrix(row beat column):")
     print(win_matrix)
     try:
-        params = choix.ilsr_pairwise_dense(win_matrix)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            params = choix.ilsr_pairwise_dense(win_matrix)
         print("\nRankings:")
         for i, player in enumerate(np.argsort(params)[::-1]):
             print("%d. %s with %0.2f rating"% (i+1, players[player], params[player]))

@@ -98,10 +98,13 @@ def calc_ranking(config):
         if finished:
             break
     util.print_progress_bar(total_games, total_games, start=start) 
+    
+    print("\n",[util.getPlayerName(player) for player in players])
     print("\nWin Matrix(row beat column):")
     print(win_matrix)
     try:
-        params = choix.ilsr_pairwise_dense(win_matrix)
+        with np.errstate(divide='ignore', invalid='ignore'):
+            params = choix.ilsr_pairwise_dense(win_matrix)
         print("\nRankings:")
         for i, player in enumerate(np.argsort(params)[::-1]):
             print("%d. %s (expected %d) with %0.2f rating"% 
