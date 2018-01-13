@@ -1,7 +1,7 @@
 from collections import deque
 import random
 try:
-   import cPickle as pickle
+   import _pickle as pickle
 except:
    import pickle
 

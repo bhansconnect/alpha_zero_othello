@@ -1,6 +1,9 @@
 from config import DataConfig
 import matplotlib.pyplot as plt
-import pickle
+try:
+   import _pickle as pickle
+except:
+   import pickle
 import glob
 
 def start():

@@ -6,7 +6,7 @@ import shutil
 import glob
 import os
 try:
-   import cPickle as pickle
+   import _pickle as pickle
 except:
    import pickle
 

@@ -3,7 +3,7 @@ from lib import tf_util, util
 from player.aiplayer import AIPlayer
 from time import time, sleep
 try:
-   import cPickle as pickle
+   import _pickle as pickle
 except:
    import pickle
 import glob

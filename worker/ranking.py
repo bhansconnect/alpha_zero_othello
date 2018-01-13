@@ -8,7 +8,6 @@ import itertools
 import random
 import choix
 import glob
-import math
 
 def start():
     config = RankingConfig()
