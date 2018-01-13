@@ -68,13 +68,13 @@ def run_games(config):
                 turn += 1
             if game.get_winner() == 0:
                 ties += 1
-                savePerformance(config, 0, 1, 0)
+                savePerformance(config, model_1, model_2, 0, 1, 0)
             elif (j % 2 == 0 and game.get_winner() == -1) or (j % 2 == 1 and game.get_winner() == 1):
                 wins += 1
-                savePerformance(config, 1, 0, 0)
+                savePerformance(config, model_1, model_2, 1, 0, 0)
             else:
                 losses += 1
-                savePerformance(config, 0, 0, 1)
+                savePerformance(config, model_1, model_2, 0, 0, 1)
             game.reset_board()
         util.print_progress_bar(config.game_num, config.game_num, start=start)
         print("%s vs %s: (%0.2f%% wins|%0.2f%% ties|%0.2f%% losses) of %d games" % (config.model_1, config.model_2, 
@@ -111,6 +111,12 @@ def load_player(player, player_name, current, config):
     else:
         return current
     
-def savePerformance(config, wins, ties, losses):
-    util.saveWTL(config, config.model_1, config.model_2, wins, ties, losses)
+def savePerformance(config, model_1, model_2, wins, ties, losses):
+    m1 = config.model_1
+    if m1 == "newest":
+        m1 = util.getPlayerName(model_1)
+    m2 = config.model_2
+    if m2 == "newest":
+        m2 = util.getPlayerName(model_2)
+    util.saveWTL(config, m1, m2, wins, ties, losses)
     util.mergeStagedWTL(config)
