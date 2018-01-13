@@ -62,7 +62,7 @@ class AIPlayer(Player):
         x = Conv2D(filters=128, kernel_size=(3,3), padding="same", data_format="channels_first")(x_in)
         x = BatchNormalization(axis=1)(x)
         x = Activation("relu")(x)
-        for _ in range(2):
+        for _ in range(10):
             x = self._build_residual_block(x)
 
         res_out = x
