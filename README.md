@@ -8,13 +8,18 @@ The program is currently working. I am trying to train a decent network. This me
 to train your own network or you would be playing against random initialization. I also will work on buffing out
 this README and the instructions.
 
-Requires Tensorflow, Keras, Tkinter, and Pickle. After that, all other libraries should be installed by them.
-Will eventually add a requirements.txt
+To install required libraries run: 
+'''bash
+pip install -r requirements.txt
+'''
 
 This version currently uses a smaller neural network for testing purposes as things are confirmed
 to be working, I will upgrade to full size.
 
-Currently run by calling "python alpha_zero_othello\run.py {self, opt, eval, play, rank, compile_rank}"
+Currently run by calling:
+'''bash
+python run.py {self, opt, eval, play, rank, compile_rank}
+'''
 
 * self for it to generate self play games.
 * opt for it to update the network.
