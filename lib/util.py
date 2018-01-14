@@ -61,7 +61,7 @@ def set_high_process_priority():
         p.nice(-5)
         
 def getPlayerName(player):
-    return os.path.basename(player).split(".")[0]
+    return ".".join(os.path.basename(player).split(".")[:-1])
 
 def saveWTL(config, p1, p2, w, t, l):
     if w > 0 or t > 0 or l > 0:

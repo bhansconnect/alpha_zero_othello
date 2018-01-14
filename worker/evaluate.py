@@ -19,7 +19,7 @@ def run_games(config):
     p1, new_1 = create_player(config.model_1, model_1, config)
     p2, new_2 = create_player(config.model_2, model_2, config)
     if config.model_1 == "newest" or config.model_2 == "newest":
-        i = len(glob.glob(config.data.model_location+"*.h5"))
+        i = len(glob.glob(config.data.model_location+"*.h5"))-1
     else:
         i = 0
     avg_wins = []
@@ -93,8 +93,6 @@ def create_player(player_name, current, config):
         player = RandomPlayer()
     elif player_name == "newest":
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
-        if model != current:
-            print("Loading new model: %s" % model)
         player = AIPlayer(0, config.game.simulation_num_per_move, train=False, model=model, tau=config.game.tau_1)
     else:
         model = config.data.model_location+player_name+".h5"
@@ -105,7 +103,7 @@ def load_player(player, player_name, current, config):
     if player_name == "newest":
         model = sorted(glob.glob(config.data.model_location+"*.h5"))[-1]
         if model != current:
-            print("Loading new model: %s" % model)
+            print("Loading new model: %s" % util.getPlayerName(model))
             player.load(model)
         return model
     else:

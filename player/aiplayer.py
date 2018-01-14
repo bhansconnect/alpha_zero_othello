@@ -36,7 +36,7 @@ class AIPlayer(Player):
         models = glob.glob(config.data.model_location + "*.h5")
         if len(models) == 0:
             ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move)
-            ai.save(config.data.model_location + str(time()) + ".h5")
+            ai.save(config.data.model_location+"model_0.h5")
             del ai
 
     def set_training(self, train):

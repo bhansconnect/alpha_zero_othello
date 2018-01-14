@@ -48,9 +48,9 @@ def train(ai, config):
         for val in history.history.keys():
             print("%s: %0.4f" % (val, history.history[val][-1]))
         if i % config.save_model_cycles == 0:
-            ai.save(config.data.model_location+str(time())+".h5")
+            ai.save(config.data.model_location+"model_"+i+".h5")
 			
-        file = open(config.data.history_location+str(time())+".pickle", 'wb') 
+        file = open(config.data.model_location+"hist_"+i+".pickle", 'wb') 
         pickle.dump(pickle.dumps(history.history), file)
         file.close() 
         print("Iteration Time: %0.2f" % (time()-start))
