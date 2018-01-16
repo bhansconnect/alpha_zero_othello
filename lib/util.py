@@ -112,7 +112,6 @@ def mergeStagedWTL(config):
         df = pd.DataFrame()
     
     for elem in merged_data:
-        print(elem)
         if not elem["player1"] in list(df):
             df[elem["player1"]] = 0.0
             df.loc[elem["player1"]] = 0.0
