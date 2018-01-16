@@ -72,6 +72,7 @@ def saveWTL(config, p1, p2, w, t, l):
             "ties": t,
             "losses": l}
         pickle.dump(data, open(config.data.performance_location+"staged_"+str(time())+".pickle","wb"))
+        sleep(0.05)
 
 def mergeStagedWTL(config):
     #only run if not already merging in another process
@@ -111,13 +112,14 @@ def mergeStagedWTL(config):
         df = pd.DataFrame()
     
     for elem in merged_data:
+        print(elem)
         if not elem["player1"] in list(df):
-            df[elem["player1"]] = 0
-            df.loc[elem["player1"]] = 0
+            df[elem["player1"]] = 0.0
+            df.loc[elem["player1"]] = 0.0
             df = df.sort_index(axis=0).sort_index(axis=1)
         if not elem["player2"] in list(df):
-            df[elem["player2"]] = 0
-            df.loc[elem["player2"]] = 0
+            df[elem["player2"]] = 0.0
+            df.loc[elem["player2"]] = 0.0
             df = df.sort_index(axis=0).sort_index(axis=1)
         df.at[elem["player1"], elem["player2"]] = df.at[elem["player1"], elem["player2"]] + elem["wins"] + 0.5*elem["ties"]
         df.at[elem["player2"], elem["player1"]] = df.at[elem["player2"], elem["player1"]] + elem["losses"] + 0.5*elem["ties"]
