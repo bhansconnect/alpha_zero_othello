@@ -87,6 +87,7 @@ class AppLogic(threading.Thread):
                         self.draw_board()
                         self.side *= -1
             time.sleep(0.01)
+        self.root.config(cursor="")
         if self.human == self.game.get_winner():
             self.root.title("Othello (You Win!)")
         elif self.game.get_winner() == 0:

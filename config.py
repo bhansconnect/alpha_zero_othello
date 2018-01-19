@@ -67,7 +67,7 @@ class EvaluateConfig:
     rolling_avg_amount = 10
     
 class RankingConfig:
-    game_num_per_model = 100
+    game_num_per_model = 100 #If you want accurate ratings, you may want this way higher
     gpu_mem_fraction = 0.249
     model_skip = 1 # aka grab every xth model...1 being all models
     print_best = False

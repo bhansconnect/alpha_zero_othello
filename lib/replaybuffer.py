@@ -51,8 +51,9 @@ class ReplayBuffer(object):
                 buf = pickle.loads(pickle.load(file))
                 self.merge(buf)
             file.close() 
+            return True
         except Exception as e:
-            print(e)
+            return False
 
     def clear(self):
         self.buffer.clear()

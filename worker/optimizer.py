@@ -48,9 +48,9 @@ def train(ai, config):
         for val in history.history.keys():
             print("%s: %0.4f" % (val, history.history[val][-1]))
         if i % config.save_model_cycles == 0:
-            ai.save(config.data.model_location+"model_"+str(i)+".h5")
+            ai.save("%smodel_%04d.h5" % (config.data.model_location, i))
 			
-        file = open(config.data.history_location+"hist_"+str(i)+".pickle", 'wb') 
+        file = open("%shist_%04d.pickle" % (config.data.history_location, i), 'wb') 
         pickle.dump(pickle.dumps(history.history), file)
         file.close() 
         print("Iteration Time: %0.2f" % (time()-start))
@@ -61,5 +61,6 @@ def load_games(ai, loaded_files, config):
     games = sorted(glob.glob(config.data.game_location+"*.pickle"))
     new = [game for game in games if game not in loaded_files]
     for game in sorted(new):
-        ai.buffer.load(game)
+        if not ai.buffer.load(game):
+            games.remove(game)
     return games
