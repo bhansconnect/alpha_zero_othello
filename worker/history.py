@@ -18,9 +18,18 @@ def start():
                 data[k] = []
             for item in v:
                 data[k].append(item)
+    legend = []
+    plt.subplot(2, 1, 1)
+    for kv in data.items():
+        legend.append(kv[0])
+        plt.plot(kv[1])
+    plt.legend(legend)
     for i, kv in enumerate(data.items()):
-        plt.subplot(1, len(data), i+1)
+        plt.subplot(2, 3, i+4)
         plt.title(kv[0])
         plt.plot(kv[1])
+    manager = plt.get_current_fig_manager()
+    manager.window.showMaximized()
+    plt.tight_layout()
     plt.show()
         
