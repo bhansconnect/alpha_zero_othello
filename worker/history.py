@@ -29,7 +29,6 @@ def start():
         plt.title(kv[0])
         plt.plot(kv[1])
     manager = plt.get_current_fig_manager()
-    manager.window.showMaximized()
     plt.tight_layout()
     plt.show()
         

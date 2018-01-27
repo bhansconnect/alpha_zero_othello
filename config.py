@@ -49,9 +49,9 @@ class OptimizerConfig:
     gpu_mem_fraction = 0.5
     verbose = 0 #0,1,2 like keras model.fit
     learning_rate1 = 1e-3
-    iter2 = 25
+    iter2 = 50
     learning_rate2 = 3e-4
-    iter3 = 50
+    iter3 = 100
     learning_rate3 = 1e-4
     data = DataConfig()
     game = GameConfig()
