@@ -1,0 +1,37 @@
+name: alpha_othello_zero
+channels:
+  - defaults
+dependencies:
+  - certifi=2017.11.5=py36hb8ac631_0
+  - pip=9.0.1=py36h226ae91_4
+  - python=3.6.3=h3b118a2_4
+  - setuptools=38.4.0=py36_0
+  - vc=14=h2379b0c_2
+  - vs2015_runtime=14.0.25123=hd4c4e62_2
+  - wheel=0.30.0=py36h6c3ec14_1
+  - wincertstore=0.2=py36h7fe50ca_0
+  - pip:
+    - bleach==1.5.0
+    - choix==0.3.0
+    - cycler==0.10.0
+    - enum34==1.1.6
+    - h5py==2.7.1
+    - html5lib==0.9999999
+    - keras==2.1.2
+    - markdown==2.6.11
+    - matplotlib==2.1.1
+    - numpy==1.14.0
+    - pandas==0.22.0
+    - protobuf==3.5.1
+    - psutil==5.4.3
+    - pyparsing==2.2.0
+    - python-dateutil==2.6.1
+    - pytz==2017.3
+    - pyyaml==3.12
+    - scipy==1.0.0
+    - six==1.11.0
+    - tensorflow-gpu==1.4.0
+    - tensorflow-tensorboard==0.4.0rc3
+    - werkzeug==0.14.1
+prefix: C:\Users\brend\AppData\Local\Continuum\anaconda3\envs\alpha_othello_zero
+
