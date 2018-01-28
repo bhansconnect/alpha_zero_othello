@@ -28,7 +28,6 @@ def start():
         plt.subplot(2, 3, i+4)
         plt.title(kv[0])
         plt.plot(kv[1])
-    manager = plt.get_current_fig_manager()
     plt.tight_layout()
     plt.show()
         

@@ -21,6 +21,7 @@ def train(ai, config):
     loaded_files = []
     x = config.iterations
     i = len(glob.glob(config.data.model_location+"*.h5"))
+    loaded_files, _ = load_games(ai, loaded_files, config)
     while(x != 0):
         if i > config.iter3:
             ai.update_lr(config.learning_rate3)
@@ -28,20 +29,19 @@ def train(ai, config):
             ai.update_lr(config.learning_rate2)
         else:
             ai.update_lr(config.learning_rate1)
-        loaded_files = load_games(ai, loaded_files, config)
-        length = 0
+        loaded_files, diff = load_games(ai, loaded_files, config)
+        total_diff = diff
         start = time()
         print("Iteration %04d"%i)
-        progress_start = (i-2)*config.min_new_game_files+config.min_game_files if i > 1 else 0
-        progress_end = (i-1)*config.min_new_game_files+config.min_game_files
-        util.print_progress_bar(0, progress_end-progress_start, start=start)
-        while(len(loaded_files) < config.min_game_files or ((len(loaded_files)-config.min_game_files)//config.min_new_game_files)+1 < i):
-            if length != len(loaded_files):
-                length = len(loaded_files)
-                util.print_progress_bar(length-progress_start, progress_end-progress_start, start=start)
+        end = config.min_new_game_files if i> 0 else config.min_game_file
+        util.print_progress_bar(0, end, start=start)
+        while(total_diff < end):
+            if diff > 0:
+                total_diff += diff
+                util.print_progress_bar(total_diff, end, start=start)
             sleep(5)
-            loaded_files = load_games(ai, loaded_files, config)
-        util.print_progress_bar(progress_end-progress_start, progress_end-progress_start, start=start)
+            loaded_files, diff = load_games(ai, loaded_files, config)
+        util.print_progress_bar(end, end, start=start)
         print("Training for %d batches on %d samples" % (config.batches_per_iter, len(ai.buffer.buffer)))
         start = time()
         history = ai.train_batches(config.batch_size, config.batches_per_iter, config.verbose)
@@ -63,4 +63,4 @@ def load_games(ai, loaded_files, config):
     for game in sorted(new):
         if not ai.buffer.load(game):
             games.remove(game)
-    return games
+    return games, len(new)

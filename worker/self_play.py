@@ -19,16 +19,14 @@ def run_games(config):
     x = config.iterations
     while(x != 0):
         x -= 1
-        i = len(glob.glob(config.data.game_location+"*.pickle")) + 1
-        print("Iteration %04d"%i)
         models = sorted(glob.glob(config.data.model_location+"*.h5"))
         if model == "":
             model = models[-1]
-            print("Loading new model: %s" % model)
+            print("Loading new model: %s" % util.getPlayerName(model))
             ai = AIPlayer(config.buffer_size, config.game.simulation_num_per_move, model=model)
         elif models[-1] != model:
             model = models[-1]
-            print("Loading new model: %s" % model)
+            print("Loading new model: %s" % util.getPlayerName(model))
             ai.load(model)
 		
         start=time()
