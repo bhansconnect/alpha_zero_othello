@@ -82,5 +82,6 @@ ENV/
 
 #generated data
 *.h5
+!model-best.h5
 *.pickle
 *.csv

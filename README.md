@@ -4,9 +4,10 @@ A Python program for learning to play Othello/Reversi from zero. The best part i
 to plug this same algorithm into many other games. If you have any questions. feel free to contact me:
 brendan.hansknecht@gmail.com
 
-The program is currently working. I am trying to train a decent network. This means that you would need
-to train your own network or you would be playing against random initialization. I also will work on buffing out
-this README and the instructions.
+The current best version is in the root directory as model-best.h5 To use it, simply copy it to into data\models.
+Once it is copied over, you can train based off of it or play with it using the commands below. This model was only
+trained for 64 iterations. This equates to approximately 30000 games, which is not a lot in terms of rl. It is definitely
+getting better, but is not super good.
 
 To install required libraries run: `pip install -r requirements.txt`
 
