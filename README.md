@@ -1,5 +1,7 @@
 # Alpha Zero Othello
 
+If you like this project, please look at my other project, [Expert Iterations General](https://github.com/bhansconnect/expert-iteration-general). It is similar to this one, but uses Pytorch and is built better.
+
 A Python program for learning to play Othello/Reversi from zero. The best part is that it is easy
 to plug this same algorithm into many other games. If you have any questions. feel free to contact me:
 brendan.hansknecht@gmail.com
