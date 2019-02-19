@@ -3,7 +3,7 @@ import numpy as np
 class Othello(object):
     
     def __init__(self):
-        self.reset_board();
+        self.reset_board()
         
     def reset_board(self):
         self.board = np.zeros((8, 8), dtype=np.int)
