@@ -1,5 +1,7 @@
 # Alpha Zero Othello
 
+> There are 2 newer versions of this project that are both significantly faster: <br> - [bhansconnect/fast-alphazero-general](https://github.com/bhansconnect/fast-alphazero-general) is completely written in python, but is much faster and more extensible than this library. <br> - [bhansconnect/alphazero-pybind11](https://github.com/bhansconnect/alphazero-pybind11) has large parts written in C++ and may be less beginner friendly, but totally crushes previous versions in performance. 
+
 If you like this project, please look at my other project, [Expert Iterations General](https://github.com/bhansconnect/expert-iteration-general). It is similar to this one, but uses Pytorch and is built better.
 
 A Python program for learning to play Othello/Reversi from zero. The best part is that it is easy
