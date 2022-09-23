@@ -10,7 +10,7 @@ Markdown==2.6.11
 matplotlib==2.1.1
 numpy==1.14.0
 pandas==0.22.0
-protobuf==3.5.1
+protobuf==3.18.3
 psutil==5.4.3
 pyparsing==2.2.0
 python-dateutil==2.6.1
