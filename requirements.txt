@@ -1,5 +1,5 @@
 bleach==1.5.0
-certifi==2017.11.5
+certifi==2022.12.7
 choix==0.3.0
 cycler==0.10.0
 enum34==1.1.6
